@@ -3,6 +3,7 @@ import axios from 'axios'
 import { observer } from 'mobx-react'
 import UserStore from './stores/UserStore'
 import Login from './components/Login'
+import Register from './components/Register'
 import Submit from './components/Submit'
 import Search from './components/Search'
 import ArticleList from './components/ArticleList'
@@ -100,13 +101,14 @@ function App() {
       </div>
     )
   } 
-  // else if (!UserStore.isLoggedIn) {
-  //   return (
-  //     <div className="App">
-  //       <Login />
-  //     </div>
-  //   )
-  // } 
+  else if (!UserStore.isLoggedIn) {
+    return (
+      <div className="App">
+        <Login />
+        <Register />
+      </div>
+    )
+  } 
   else {
     return (
       <div className="App">

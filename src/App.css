@@ -5,3 +5,18 @@
 .App-header {
 	text-align: center;
 }
+
+.login-form {
+	justify-content: center;
+	min-height: 70vh;
+}
+
+.button-block{
+	width: 100%;
+}
+
+.login-background {
+	justify-content: center;
+	min-height: 30vh;
+	padding: 50px;
+}

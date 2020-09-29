@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 class Router {
 	constructor(app, db) {
 		this.login(app, db)
+		this.register(app, db)
 		this.logout(app, db)
 		this.isLoggedIn(app, db)
 	}
@@ -52,6 +53,58 @@ class Router {
 					res.json({
 						success: false,
 						msg: "Username does not exist"
+					})
+				}
+			})
+		})
+	}
+
+	register(app, db) {
+		app.post('/register', (req, res) => {
+			let username = req.body.username
+			let password = req.body.password
+			let confirm = req.body.confirm
+
+			username = username.toLowerCase()
+
+			if (username.length > 12 || password.length > 12) {
+				res.json({
+					success: false,
+					msg: 'Username or password too long, please try again.'
+				})
+				return
+			}
+
+			if (password !== confirm) {
+				res.json({
+					success: false,
+					msg: 'Passwords do not match, please try again.'
+				})
+				return
+			}
+
+			db.query('SELECT * FROM user WHERE username = ? LIMIT 1', [username], (err, data, fields) => {
+				if (data && data.length === 1) {
+					res.json({
+						success: false,
+						msg: 'Username taken.'
+					})
+					return
+				} else {
+					let pswrd = bcrypt.hashSync(password, 9)
+					db.query('INSERT INTO user (username, password) VALUES (?, ?)', [username, pswrd], (err, data, fields) => {
+						if (err) {
+							res.json({
+								success: false,
+								msg: 'An error occurred, please try again.'
+							})
+							return
+						} else {
+							res.json({
+								success: true,
+								msg: `${username} has been registered.`
+							})
+						}
 					})
 				}
 			})

@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import TextField from '@material-ui/core/TextField'
 import Submit from './Submit'
 import UserStore from '../stores/UserStore'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
-import Link from '@material-ui/core/Link'
-import TextField from '@material-ui/core/TextField'
 import '../App.css'
 
-function Login() {
+function Register() {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
+	const [confirm, setConfirm] = useState('')
 	const [buttonDisabled, setButtonDisabled] = useState(false)
 
 	const setInputValue = event => {
@@ -20,7 +20,13 @@ function Login() {
 		if (value.length > 12) {
 			return
 		}
-		name === 'username' ? setUsername(value) : setPassword(value)
+		if (name === 'username') {
+			setUsername(value)
+		} else if (name === 'password') {
+			setPassword(value)
+		} else {
+			setConfirm(value)
+		}
 	}
 
 	const resetForm = () => {
@@ -29,14 +35,15 @@ function Login() {
 		setButtonDisabled(false)
 	}
 
-	const doLogin = async () => {
+	const doRegister = async () => {
 		if (!username) return
 		if (!password) return
+		if (!confirm) return
 		setButtonDisabled(true)
 
 		try {
 			let res = await axios({
-				url: '/login',
+				url: '/register',
 				method: 'post',
 				headers: { 
 	      	'Accept': 'application/json', 
@@ -44,7 +51,8 @@ function Login() {
 	      },
 	      data: JSON.stringify({
 	      	username: username,
-	      	password: password
+	      	password: password,
+	      	confirm: confirm
 	      })
 			})
 
@@ -63,7 +71,7 @@ function Login() {
 	}
 
 	return (
-		<div className="login">
+		<div className="register">
 			<Grid container spacing={0} justify="center" direction="row">
 				<Grid item>
 					<Grid
@@ -76,7 +84,7 @@ function Login() {
 						<Paper variant="elevation" elevation={2} className="login-background">
 							<Grid item>
 								<Typography component="h1" variant="h5">
-									Sign in
+									Sign Up
 								</Typography>
 							</Grid>
 							<Grid item>
@@ -99,26 +107,34 @@ function Login() {
 												name="password"
 											  label="password"
 											  type="password"
-											  autoComplete="current-password"
 											  variant="outlined"
 											  value={password ? password : ''}
 												onChange={setInputValue}
 											/>
 										</Grid>
 										<Grid item>
+											<TextField 
+												required
+												name="confirm"
+											  label="confirm password"
+											  type="password"
+											  variant="outlined"
+											  value={confirm ? confirm : ''}
+												onChange={setInputValue}
+											/>
+										</Grid>
+										<Grid item>
 											<Submit 
-												text='Log in'
+												text='Register'
 												disabled={buttonDisabled}
-												onClick={() => doLogin()}
+												onClick={() => doRegister()}
 											/>
 										</Grid>
 									</Grid>
 								</form>
 							</Grid>
 							<Grid item>
-								<Link href="#" variant="body2">
-									Forgot Password?
-								</Link>
+								Already a member? <a href='#'>Sign In</a>
 							</Grid>
 						</Paper>
 					</Grid>
@@ -128,4 +144,4 @@ function Login() {
 	)
 }
 
-export default Login
+export default Register
