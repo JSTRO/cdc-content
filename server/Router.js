@@ -38,6 +38,7 @@ class Router {
 						if (verified) {
 							req.session.userID = data[0].id
 							res.json({
+								data: data,
 								success: true, 
 								username: data[0].username
 							})
@@ -102,6 +103,7 @@ class Router {
 						} else {
 							res.json({
 								success: true,
+								username: username,
 								msg: `${username} has been registered.`
 							})
 						}

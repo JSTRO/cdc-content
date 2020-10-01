@@ -1,6 +1,6 @@
 import React from 'react'
-import useAPI from '../hooks/useAPI'
 import Article from './Article'
+import useAPI from '../hooks/useAPI'
 
 function ArticleList({articles}) {
 	const { loading } = useAPI()
@@ -8,10 +8,11 @@ function ArticleList({articles}) {
 	if (loading) {
 		return <p>Loading...</p>
 	}
+
 	return (
 		<div>
-			{articles.map(article => <Article article={article} key={article.id} />)}
-		</div>	
+			{articles.map(article => <Article article={article} key={article.id} />)}	
+		</div>
 	)
 }
 

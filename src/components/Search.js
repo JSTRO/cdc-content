@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function Search({search, setSearch}) {
+function Search({ search, setSearch }) {
   const classes = useStyles()
 
   const handleSearch = (event) => {
@@ -52,4 +52,3 @@ function Search({search, setSearch}) {
 }
 
 export default Search
-

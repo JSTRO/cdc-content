@@ -11,7 +11,7 @@ export default function useAPI() {
       setLoading(true)
       setError(false)
       try {
-        const res = await axios.get('https://tools.cdc.gov/api/v2/resources/media?max=1000')
+        const res = await axios.get('https://tools.cdc.gov/api/v2/resources/media?max=100')
         setArticles(res.data.results)
         setLoading(false)
       } catch(err) {

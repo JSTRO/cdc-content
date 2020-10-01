@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import TextField from '@material-ui/core/TextField'
 import Submit from './Submit'
-import UserStore from '../stores/UserStore'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
@@ -59,11 +59,10 @@ function Register() {
 			let result = await res.data
 
 			if (result && result.success) {
-        UserStore.isLoggedIn = true
-        UserStore.username = result.username
+        alert(result.msg)
       } else if (result && result.success === false) {
-      		resetForm()
-      		alert(result.msg)
+    		resetForm()
+    		alert(result.msg)
       }
 	  } catch(err) {
 	  		resetForm()
@@ -126,6 +125,7 @@ function Register() {
 										<Grid item>
 											<Submit 
 												text='Register'
+												color="primary"
 												disabled={buttonDisabled}
 												onClick={() => doRegister()}
 											/>
@@ -134,7 +134,7 @@ function Register() {
 								</form>
 							</Grid>
 							<Grid item>
-								Already a member? <a href='#'>Sign In</a>
+								Already a member? <Link to='/login'>Sign In</Link>
 							</Grid>
 						</Paper>
 					</Grid>
