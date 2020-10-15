@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import TextField from '@material-ui/core/TextField'
 import Submit from './Submit'
@@ -7,7 +7,6 @@ import UserStore from '../stores/UserStore'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
-import Link from '@material-ui/core/Link'
 import '../App.css'
 
 function Login() {
@@ -118,9 +117,9 @@ function Login() {
 								</form>
 							</Grid>
 							<Grid item>
-								<RouterLink to="/">
+								<Link to="/register">
 									Sign Up
-								</RouterLink>
+								</Link>
 							</Grid>
 							<Grid item>
 								Forgot Password?

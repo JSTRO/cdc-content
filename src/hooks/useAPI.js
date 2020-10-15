@@ -5,13 +5,21 @@ export default function useAPI() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const [articles, setArticles] = useState([])
+  const [filteredArticles, setFilteredArticles] = useState([])
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     const getResults = async () => {
       setLoading(true)
       setError(false)
       try {
-        const res = await axios.get('https://tools.cdc.gov/api/v2/resources/media?max=100')
+        const res = await axios.get('https://tools.cdc.gov/api/v2/resources/media', {
+          params: {
+            q: search,
+            language: 'english',
+            max: 10,
+          }
+        })
         setArticles(res.data.results)
         setLoading(false)
       } catch(err) {
@@ -19,7 +27,14 @@ export default function useAPI() {
       }
     }
     getResults()
-  }, [])
+  }, [search])
 
-  return { loading, error, articles, setArticles }
+  //  useEffect(() => {
+  //   setFilteredArticles(articles.filter(a => {
+  //     return a.name.toLowerCase().includes(search.toLowerCase())
+  //   }))
+  //   setCurrentPage(0)
+  // }, [search, articles])
+
+  return { loading, error, articles, setArticles, search, setSearch }
 }

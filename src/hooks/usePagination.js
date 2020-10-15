@@ -3,27 +3,23 @@ import useAPI from './useAPI'
 
 export default function usePagination() {
   const { articles } = useAPI()
-  const [search, setSearch] = useState('')
-  const [currentPage, setCurrentPage] = useState(1)
-  const [articlesPerPage] = useState(20)
-  const [filteredArticles, setFilteredArticles] = useState([])
+  const [currentPage, setCurrentPage] = useState(0)
+  const [articlesPerPage, setArticlesPerPage] = useState(10)
 
-  const indexOfLastPost = currentPage * articlesPerPage
+  const indexOfLastPost = (currentPage + 1) * articlesPerPage
   const indexOfFirstPost = indexOfLastPost - articlesPerPage
-  const currentArticles = filteredArticles.slice(indexOfFirstPost, indexOfLastPost)
-  const pageCount = Math.ceil(filteredArticles.length / articlesPerPage)
+  const currentArticles = articles.slice(indexOfFirstPost, indexOfLastPost)
 
-  const handleChange = (event, value) => {
-    setCurrentPage(value);
+  const handlePageChange = (event, newPage) => {
+    setCurrentPage(newPage)
   }
 
-  useEffect(() => {
-    setFilteredArticles(articles.filter(a => {
-      return a.name.toLowerCase().includes(search.toLowerCase())
-    }))
-    setCurrentPage(1)
-  }, [search, articles])
+  const handleChangeRowsPerPage = (event) => {
+    const { value } = event.target
+    setArticlesPerPage(parseInt(value))
+    setCurrentPage(0)
+  }
 
-  return { search, setSearch, pageCount, currentPage, handleChange, currentArticles }
+  return { articlesPerPage, currentPage, setCurrentPage, handlePageChange, handleChangeRowsPerPage, currentArticles }
 
 }

@@ -1,11 +1,24 @@
 import React from 'react'
 import SearchIcon from '@material-ui/icons/Search'
 import InputBase from '@material-ui/core/InputBase'
-import { makeStyles } from '@material-ui/core/styles'
+import useAPI from '../hooks/useAPI'
+import { makeStyles, fade } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
   search: {
     position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(3),
+      width: 'auto',
+    },
   },
   searchIcon: {
     width: theme.spacing(7),
@@ -23,8 +36,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function Search({ search, setSearch }) {
+function Search({search, setSearch}) {
   const classes = useStyles()
+  //const { search, setSearch } = useAPI()
 
   const handleSearch = (event) => {
     const { value } = event.target

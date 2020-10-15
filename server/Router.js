@@ -6,6 +6,7 @@ class Router {
 		this.register(app, db)
 		this.logout(app, db)
 		this.isLoggedIn(app, db)
+		this.addToList(app, db)
 	}
 
 	login(app, db) {
@@ -147,6 +148,36 @@ class Router {
 					} else {
 						res.json({
 							success: false,
+						})
+					}
+				})
+			} else {
+				res.json({
+					success: false,
+				})
+			}
+		})
+	}
+
+	addToList(app, db) {
+		const sql = `INSERT INTO list (username, listID) VALUES (?, ?)`
+
+		app.post('/list', (req, res) => {
+			let username = req.body.username
+			let listID = req.body.listID
+			if (req.session.userID) {
+				db.query(sql, [username, listID, username, listID], (err, data, fields) => {
+					if (err) {a
+						res.json({
+							success: false,
+							msg: 'An error occurred, please try again.'
+						})
+						return
+					} else {
+						res.json({
+							success: true,
+							username: username,
+							listID: listID
 						})
 					}
 				})

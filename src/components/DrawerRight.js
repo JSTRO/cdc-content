@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import UserStore from '../stores/UserStore'
 import clsx from 'clsx'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
@@ -16,7 +17,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import InboxIcon from '@material-ui/icons/MoveToInbox'
-import MailIcon from '@material-ui/icons/Mail'
+import Search from './Search'
 import Submit from './Submit'
 import logout from '../auth/logout'
 
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    textAlign: 'center'
+    //textAlign: 'center'
   },
   hide: {
     display: 'none',
@@ -79,18 +80,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PersistentDrawerRight() {
-  const classes = useStyles();
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+function DrawerRight({myList, search, setSearch}) {
+  const classes = useStyles()
+  const theme = useTheme()
+  // const { search, setSearch } = usePagination()
+  const [open, setOpen] = useState(false)
 
   const handleDrawerOpen = () => {
     setOpen(true);
-  };
+  }
 
   const handleDrawerClose = () => {
     setOpen(false);
-  };
+  }
 
   return (
     <div className={classes.root}>
@@ -105,6 +107,7 @@ export default function PersistentDrawerRight() {
           <Typography variant="h6" noWrap className={classes.title}>
             CDC Content
           </Typography>
+          <Search search={search} setSearch={setSearch}/>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -137,15 +140,17 @@ export default function PersistentDrawerRight() {
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
+          <p>Welcome, {UserStore.username}</p>
         </div>
         <Divider />
         <List>
-          {['My List', 'Profile Info'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          <ListItem button>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="My List" />
+          </ListItem>
+          {UserStore.list.map(item => <ListItem>{item}</ListItem>)}
         </List>
         <Divider />
         <List>
@@ -164,3 +169,5 @@ export default function PersistentDrawerRight() {
     </div>
   );
 }
+
+export default DrawerRight
