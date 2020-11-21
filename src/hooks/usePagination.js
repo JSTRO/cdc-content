@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react'
 import useAPI from './useAPI'
 
 export default function usePagination() {
-  const { articles } = useAPI()
-  const [currentPage, setCurrentPage] = useState(0)
-  const [articlesPerPage, setArticlesPerPage] = useState(10)
+  const { articles, articlesPerPage, setArticlesPerPage, currentPage, setCurrentPage } = useAPI()
+  //const [currentPage, setCurrentPage] = useState(0)
 
+  const pageCount = Math.ceil(articles.length)
   const indexOfLastPost = (currentPage + 1) * articlesPerPage
   const indexOfFirstPost = indexOfLastPost - articlesPerPage
   const currentArticles = articles.slice(indexOfFirstPost, indexOfLastPost)
@@ -20,6 +20,5 @@ export default function usePagination() {
     setCurrentPage(0)
   }
 
-  return { articlesPerPage, currentPage, setCurrentPage, handlePageChange, handleChangeRowsPerPage, currentArticles }
-
+  return {handlePageChange, handleChangeRowsPerPage, currentArticles, pageCount}
 }

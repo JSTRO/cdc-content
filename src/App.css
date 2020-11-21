@@ -1,5 +1,5 @@
 .App {
-  margin: 100px 15%;
+  margin: 100px 20%;
 }
 
 .App-header {
@@ -15,8 +15,27 @@
 	width: 100%;
 }
 
+.delete-icon {
+	position: absolute;
+}
+
+.delete-icon:hover {
+  color: #f50057;
+}
+
 .login-background {
 	justify-content: center;
 	min-height: 30vh;
 	padding: 50px;
+}
+
+.footer-container {
+	text-align: center;
+	padding-top: 20px;
+}
+
+.footer {
+	left: 0;
+	bottom: 0;
+	right: 0;
 }

@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import UserStore from '../stores/UserStore'
+import { observer } from 'mobx-react'
 import clsx from 'clsx'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import drawerStyles from '../styles/drawerStyles'
+import { useTheme } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import List from '@material-ui/core/List'
+import MyList from './MyList'
 import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
@@ -17,73 +21,11 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import InboxIcon from '@material-ui/icons/MoveToInbox'
-import Search from './Search'
 import Submit from './Submit'
-import logout from '../auth/logout'
 
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  appBar: {
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginRight: drawerWidth,
-  },
-  title: {
-    flexGrow: 1,
-    //textAlign: 'center'
-  },
-  hide: {
-    display: 'none',
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    justifyContent: 'flex-start',
-  },
-  content: {
-    flexGrow: 1,
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginRight: -drawerWidth,
-  },
-  contentShift: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginRight: 0,
-  },
-}));
-
-function DrawerRight({myList, search, setSearch}) {
-  const classes = useStyles()
+function DrawerRight({ search, setSearch }) {
+  const classes = drawerStyles()
   const theme = useTheme()
-  // const { search, setSearch } = usePagination()
   const [open, setOpen] = useState(false)
 
   const handleDrawerOpen = () => {
@@ -107,7 +49,6 @@ function DrawerRight({myList, search, setSearch}) {
           <Typography variant="h6" noWrap className={classes.title}>
             CDC Content
           </Typography>
-          <Search search={search} setSearch={setSearch}/>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -140,7 +81,10 @@ function DrawerRight({myList, search, setSearch}) {
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
-          <p>Welcome, {UserStore.username}</p>
+          {UserStore.isLoggedIn ? 
+            <p>Welcome, {UserStore.username}</p> : 
+            <p>Log in or create an account below to save articles to your list!</p>
+          }
         </div>
         <Divider />
         <List>
@@ -148,26 +92,44 @@ function DrawerRight({myList, search, setSearch}) {
             <ListItemIcon>
               <InboxIcon />
             </ListItemIcon>
-            <ListItemText primary="My List" />
+            <ListItemText primary="My List"/>
           </ListItem>
-          {UserStore.list.map(item => <ListItem>{item}</ListItem>)}
+          {UserStore.isLoggedIn && <MyList />}
         </List>
         <Divider />
-        <List>
-          <ListItem>
-            <ListItemText>
-              <Submit 
-                text={'Log Out'} 
-                color="secondary"
-                disabed={false} 
-                onClick={() => logout()}
-              />
-            </ListItemText>
-          </ListItem>
-        </List>
+          <List>
+            {UserStore.isLoggedIn ?
+              <ListItem>
+                <ListItemText>
+                  <Submit 
+                    text={'Log Out'} 
+                    color="secondary"
+                    disabed={false} 
+                    onClick={() => UserStore.logout()}
+                  />
+                </ListItemText>
+              </ListItem> :
+            <>
+              <ListItem>
+                <ListItemText>
+                  <Link to="/login">
+                    Log In
+                   </Link> 
+                </ListItemText>
+              </ListItem> 
+              <ListItem>
+                <ListItemText>
+                  <Link to="/register">
+                    Sign Up
+                  </Link> 
+                </ListItemText>
+              </ListItem>
+            </>
+          }
+          </List> 
       </Drawer>
     </div>
-  );
+  )
 }
 
-export default DrawerRight
+export default observer(DrawerRight)

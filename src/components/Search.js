@@ -1,44 +1,12 @@
 import React from 'react'
 import SearchIcon from '@material-ui/icons/Search'
+import IconButton from '@material-ui/core/IconButton'
 import InputBase from '@material-ui/core/InputBase'
-import useAPI from '../hooks/useAPI'
-import { makeStyles, fade } from '@material-ui/core/styles'
-
-const useStyles = makeStyles((theme) => ({
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    width: theme.spacing(7),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 7),
-    transition: theme.transitions.create('width'),
-    width: '100%',
-  },
-}))
+import Paper from '@material-ui/core/Paper'
+import searchStyles from '../styles/searchStyles'
 
 function Search({search, setSearch}) {
-  const classes = useStyles()
-  //const { search, setSearch } = useAPI()
+  const classes = searchStyles()
 
   const handleSearch = (event) => {
     const { value } = event.target
@@ -46,10 +14,10 @@ function Search({search, setSearch}) {
   }
 
   return (
-    <div className={classes.search}>
-      <div className={classes.searchIcon}>
+    <Paper className={classes.search}>
+      <IconButton type="submit" className={classes.iconButton} aria-label="search">
         <SearchIcon />
-      </div>
+      </IconButton>
       <InputBase
         placeholder="Search…"
         name="search"
@@ -61,7 +29,7 @@ function Search({search, setSearch}) {
         }}
         inputProps={{ 'aria-label': 'search' }}
       />
-    </div>
+    </Paper>
   )
 }
 

@@ -6,7 +6,7 @@ const session = require ('express-session')
 const MySQLStore = require('express-mysql-session')(session)
 const Router = require('./Router')
 
-app.use(express.static(path.join(__dirname, 'build')))
+app.use(express.static(path.join(__dirname, '../public')))
 app.use(express.json())
 
 // Database
@@ -14,7 +14,8 @@ const db = mysql.createConnection({
 	host: 'localhost',
 	user: 'root',
 	password: 'a4UM7MWPDZzBt6tI',
-	database: 'cdc-content'
+	database: 'cdc-content',
+	debug: ['ComQueryPacket', 'RowDataPacket']
 })
 
 db.connect(err => {
@@ -28,7 +29,7 @@ db.connect(err => {
 })
 
 const sessionStore = new MySQLStore({
-	expiration: (1825 * 86400 * 1000),
+	expiration: (10000),
 	endConnectionOnClose: false,
 }, db)
 
@@ -47,7 +48,7 @@ app.use(session({
 new Router(app, db)
 
 app.get('/', function(req, res) {
-	res.sendFile(path.join(__dirname, 'build'))
+	res.sendFile(path.join(__dirname, '../public', 'index.html'))
 })
 
-app.listen(3000)
+app.listen(process.env.PORT || 8080)

@@ -7,6 +7,9 @@ class Router {
 		this.logout(app, db)
 		this.isLoggedIn(app, db)
 		this.addToList(app, db)
+		this.getListItems(app, db)
+		this.getListItems(app, db)
+		this.deleteListItem(app, db)
 	}
 
 	login(app, db) {
@@ -160,25 +163,30 @@ class Router {
 	}
 
 	addToList(app, db) {
-		const sql = `INSERT INTO list (username, listID) VALUES (?, ?)`
+		const sql = 'INSERT INTO list (username, listID, name, sourceUrl) VALUES (?, ?, ?, ?)'
 
 		app.post('/list', (req, res) => {
 			let username = req.body.username
 			let listID = req.body.listID
+			let name = req.body.name
+			let sourceUrl = req.body.sourceUrl
 			if (req.session.userID) {
-				db.query(sql, [username, listID, username, listID], (err, data, fields) => {
-					if (err) {a
+				db.query(sql, [username, listID, name, sourceUrl], (err) => {
+					if (err) {
 						res.json({
 							success: false,
-							msg: 'An error occurred, please try again.'
+							msg: err
 						})
 						return
 					} else {
 						res.json({
 							success: true,
 							username: username,
-							listID: listID
+							listID: listID,
+							name: name,
+							sourceUrl: sourceUrl
 						})
+						console.log(sql)
 					}
 				})
 			} else {
@@ -187,6 +195,51 @@ class Router {
 				})
 			}
 		})
+	}
+
+	getListItems(app, db) {
+		const sql = `SELECT * from list WHERE username = ?`
+
+		app.get('/list', (req, res) => {
+			let username = req.query.username
+			db.query(sql, [username], (err, rows) => {
+				if (err) {
+					res.json({
+						success: false,
+						msg: err
+					})
+					return
+				} else {
+					res.json({
+    				success: true,
+    				data: rows,
+  				})
+				}
+			})
+		}) 
+	}
+
+	deleteListItem(app, db) {
+		const sql = `DELETE from list WHERE username = ? AND listID = ?`
+
+		app.delete('/list', (req, res) => {
+			let username = req.query.username
+			let listID = req.query.listID
+			db.query(sql, [username, listID], (err, rows) => {
+				if (err) {
+					res.json({
+						success: false,
+						msg: err
+					})
+					return
+				} else {
+					res.json({
+    				success: true,
+    				data: rows,
+  				})
+				}
+			})
+		}) 
 	}
 }
 
