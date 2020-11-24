@@ -10,7 +10,7 @@ import '../App.css'
 
 function LoginPage({username, password, setInputValue, buttonDisabled, doLogin}) {
 	return (
-		<div className="register">
+		<>
 			<Grid container spacing={0} justify="center" direction="row">
 				<Grid item>
 					<Grid
@@ -74,7 +74,7 @@ function LoginPage({username, password, setInputValue, buttonDisabled, doLogin})
 					</Grid>
 				</Grid>
 			</Grid>
-		</div>
+		</>
 	)
 }
 

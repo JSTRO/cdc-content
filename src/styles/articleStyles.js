@@ -25,8 +25,8 @@ const articleStyles = makeStyles(theme => ({
   },
   large: {
     margin: 5,
-    width: 80,
-    height: 80,
+    width: '70%',
+    height: '70%',
     justify: 'center',
     alignItems: 'center'
   },

@@ -9,7 +9,7 @@ import '../App.css'
 
 function RegisterPage({username, password, confirm, setInputValue, buttonDisabled, doRegister}) {
 	return (
-		<div className="register">
+		<>
 			<Grid container spacing={0} justify="center" direction="row">
 				<Grid item>
 					<Grid
@@ -76,10 +76,10 @@ function RegisterPage({username, password, confirm, setInputValue, buttonDisable
 								Already a member? <Link to='/login'>Sign In</Link>
 							</Grid>
 						</Paper>
-					</Grid>
+					</Grid>/
 				</Grid>
 			</Grid>
-		</div>
+		</>
 	)
 }
 

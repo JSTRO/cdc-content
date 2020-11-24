@@ -42,7 +42,7 @@ function MyListItem({item}) {
                 <Link
                   color="inherit"
                   href={item ? item.sourceUrl : ""}
-                  target=""
+                  target="blank"
                   underline="none"
                 > 
                   {item.name}

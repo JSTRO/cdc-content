@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import UserStore from '../stores/UserStore'
 import { observer } from 'mobx-react'
 import MyListItem from './MyListItem'
@@ -13,7 +13,7 @@ function MyList() {
 	
 	return (
 		<div>
-			{UserStore.list.map(item => <MyListItem item={item}/>)}	
+			{UserStore.list.map(item => <MyListItem item={item} key={item.listID}/>)}	
 		</div>
 	)
 }

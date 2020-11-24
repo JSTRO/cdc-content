@@ -20,8 +20,9 @@ function App() {
     search,
     setSearch,
     pageCount,
+    tagList,
+    setTagList
   } = useAPI()
-  const [tagList, setTagList] = useState([])
 
   useEffect(() => {
     UserStore.checkIsLoggedIn()
@@ -30,7 +31,7 @@ function App() {
   const handleChange = (event, value) => {
     setCurrentPage(value)
   }
-  
+
   if (UserStore.loading) {
     return (
       <div className="App">

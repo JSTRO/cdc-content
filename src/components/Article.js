@@ -36,8 +36,8 @@ function Article({ article, setTagList }) {
     <Card className={classes.root} variant="outlined">
       <div className={classes.details}>
         <CardContent className={classes.content}>
-          <Grid container spacing={2}>
-            <Grid item med={3}>
+          <Grid container spacing={1}>
+            <Grid item sm={3}>
               <Avatar
                 alt={thumbnailUrl}
                 src={thumbnailUrl}
@@ -45,7 +45,7 @@ function Article({ article, setTagList }) {
                 className={classes.large}
               />
             </Grid>
-            <Grid item med={9}>
+            <Grid item sm={9}>
               <Typography variant="h6" component="h2" gutterBottom>
                 <Link
                   href={sourceUrl}
