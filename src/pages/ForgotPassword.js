@@ -1,22 +1,13 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { TextField, Grid, Typography, Paper } from '@material-ui/core'
 import Submit from '../components/Submit'
 import ContinueToBrowse from '../components/ContinueToBrowse'
+import { observer } from 'mobx-react'
 import useAuth from '../hooks/useAuth'
 import '../App.css'
 
-function RegisterPage() {
-	const {
-		username,
-		password,
-		email,
-		confirm,
-		errors,
-		setInputValue,
-		buttonDisabled,
-		doRegister,
-	} = useAuth()
+function ForgotPassword() {
+	const { email, errors, setInputValue, buttonDisabled, resetPassword } = useAuth()
 
 	return (
 		<>
@@ -33,7 +24,7 @@ function RegisterPage() {
 						<Paper
 							variant="elevation"
 							elevation={2}
-							className="login-background"
+							className="forgot-background"
 						>
 							<Grid item>
 								<ul className="validation-errors">
@@ -42,23 +33,12 @@ function RegisterPage() {
 									))}
 								</ul>
 								<Typography variant="h5" gutterBottom>
-									Sign Up
+									Reset Password
 								</Typography>
 							</Grid>
 							<Grid item>
 								<form>
 									<Grid container direction="column" spacing={2}>
-										<Grid item>
-											<TextField
-												required
-												name="username"
-												label="username"
-												autoComplete="username"
-												variant="outlined"
-												value={username ? username : ''}
-												onChange={setInputValue}
-											/>
-										</Grid>
 										<Grid item>
 											<TextField
 												required
@@ -71,44 +51,15 @@ function RegisterPage() {
 											/>
 										</Grid>
 										<Grid item>
-											<TextField
-												required
-												name="password"
-												type="password"
-												label="password"
-												autoComplete="password"
-												variant="outlined"
-												value={password ? password : ''}
-												onChange={setInputValue}
-											/>
-										</Grid>
-										<Grid item>
-											<TextField
-												required
-												name="confirm"
-												label="confirm password"
-												type="password"
-												autoComplete="password"
-												variant="outlined"
-												value={confirm ? confirm : ''}
-												onChange={setInputValue}
-											/>
-										</Grid>
-										<Grid item>
 											<Submit
-												text="Register"
+												text="Continue"
 												color="primary"
 												disabled={buttonDisabled}
-												onClick={() => doRegister()}
+												onClick={resetPassword}
 											/>
 										</Grid>
 									</Grid>
 								</form>
-							</Grid>
-							<Grid item>
-								<Typography variant="subtitle1">
-									Already a member? <Link to="/login">Log In</Link>
-								</Typography>
 							</Grid>
 						</Paper>
 					</Grid>
@@ -118,4 +69,4 @@ function RegisterPage() {
 	)
 }
 
-export default RegisterPage
+export default observer(ForgotPassword)

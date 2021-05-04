@@ -1,16 +1,25 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import TextField from '@material-ui/core/TextField'
+import { TextField, Grid, Typography, Paper } from '@material-ui/core'
 import Submit from '../components/Submit'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import Paper from '@material-ui/core/Paper'
+import ContinueToBrowse from '../components/ContinueToBrowse'
 import { observer } from 'mobx-react'
+import useAuth from '../hooks/useAuth'
 import '../App.css'
 
-function LoginPage({username, password, setInputValue, buttonDisabled, doLogin}) {
+function LoginPage() {
+	const {
+		username,
+		password,
+		errors,
+		setInputValue,
+		buttonDisabled,
+		doLogin,
+	} = useAuth()
+
 	return (
 		<>
+			<ContinueToBrowse />
 			<Grid container spacing={0} justify="center" direction="row">
 				<Grid item>
 					<Grid
@@ -20,9 +29,18 @@ function LoginPage({username, password, setInputValue, buttonDisabled, doLogin})
 						spacing={2}
 						className="login-form"
 					>
-						<Paper variant="elevation" elevation={2} className="register-background">
+						<Paper
+							variant="elevation"
+							elevation={2}
+							className="login-background"
+						>
 							<Grid item>
-								<Typography component="h1" variant="h5">
+								<ul className="validation-errors">
+									{Object.values(errors).map((error, idx) => (
+										<li key={idx}>{error}</li>
+									))}
+								</ul>
+								<Typography variant="h5" gutterBottom>
 									Log In
 								</Typography>
 							</Grid>
@@ -32,9 +50,9 @@ function LoginPage({username, password, setInputValue, buttonDisabled, doLogin})
 										<Grid item>
 											<TextField
 												required
-												name='username'
-												label='username'
-												autoComplete='username'
+												name="username"
+												label="username"
+												autoComplete="username"
 												variant="outlined"
 												value={username ? username : ''}
 												onChange={setInputValue}
@@ -43,16 +61,17 @@ function LoginPage({username, password, setInputValue, buttonDisabled, doLogin})
 										<Grid item>
 											<TextField
 												required
-												name='password'
-												label='password'
-												autoComplete='password'
+												name="password"
+												type="password"
+												label="password"
+												autoComplete="password"
 												variant="outlined"
 												value={password ? password : ''}
 												onChange={setInputValue}
 											/>
 										</Grid>
 										<Grid item>
-											<Submit 
+											<Submit
 												text="Log in"
 												color="primary"
 												disabled={buttonDisabled}
@@ -63,13 +82,13 @@ function LoginPage({username, password, setInputValue, buttonDisabled, doLogin})
 								</form>
 							</Grid>
 							<Grid item>
-								<Link to="/register">
-									Sign Up
-								</Link>
+								<Typography variant="subtitle1">
+									<Link to="/register">Sign Up</Link>
+								</Typography>
 							</Grid>
-							<Grid item>
-								Forgot Password?
-							</Grid>
+								<Typography variant="subtitle1">
+									<Link to="/forgot" className="continue">Forgot Password?</Link>
+								</Typography>
 						</Paper>
 					</Grid>
 				</Grid>

@@ -1,5 +1,6 @@
 .App {
-  margin: 100px 20%;
+	margin: 100px 20%;
+	font-family: 'Helvetica'
 }
 
 .App-header {
@@ -8,11 +9,15 @@
 
 .login-form {
 	justify-content: center;
-	min-height: 70vh;
+	min-height: 60vh;
 }
 
-.button-block{
+.button-block {
 	width: 100%;
+}
+
+.continue {
+	text-align: right;
 }
 
 .delete-icon {
@@ -20,7 +25,24 @@
 }
 
 .delete-icon:hover {
-  color: #f50057;
+	color: #f50057;
+}
+
+.footer-container {
+	text-align: center;
+	padding-top: 60px;
+	padding-bottom: -20px;
+}
+
+.footer {
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+
+.forgot-background {
+	justify-content: center;
+	padding: 50px;
 }
 
 .login-background {
@@ -29,13 +51,21 @@
 	padding: 50px;
 }
 
-.footer-container {
-	text-align: center;
-	padding-top: 20px;
+.pagination {
+	display: flex;
+	justify-content: center;
+	padding: 15px;
 }
 
-.footer {
-	left: 0;
-	bottom: 0;
-	right: 0;
+.password-sent {
+	justify-content: center;
+	padding: 50px;
+}
+
+.search {
+	margin: 0px 20%;
+}
+
+.validation-errors {
+	color: red;
 }

@@ -1,17 +1,19 @@
 import React from 'react'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import Typography from '@material-ui/core/Typography'
-import Grid from '@material-ui/core/Grid'
-import Link from '@material-ui/core/Link'
-import Tag from './Tag'
-import IconButton from '@material-ui/core/IconButton'
-import Avatar from '@material-ui/core/Avatar'
+import {
+  Card,
+  CardContent,
+  Typography,
+  Grid,
+  Link,
+  IconButton,
+  Avatar,
+} from '@material-ui/core'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
-import formatDate from '../utils/formatDate.js'
+import Tag from './Tag'
 import DOMPurify from 'dompurify'
 import UserStore from '../stores/UserStore'
 import { observer } from 'mobx-react'
+import formatDate from '../utils/formatDate.js'
 import articleStyles from '../styles/articleStyles'
 
 function Article({ article, setTagList }) {
@@ -26,7 +28,7 @@ function Article({ article, setTagList }) {
     sourceUrl,
     thumbnailUrl,
   } = article
-  const sanitizedName = { __html: DOMPurify.sanitize(article.name) }
+  const sanitizedName = { __html: DOMPurify.sanitize(name) }
   const { isLoggedIn, addToList, isItemInList } = UserStore
   const chips = tags.map(tag => (
     <Tag key={tag.id} tag={tag} setTagList={setTagList} />
@@ -68,7 +70,7 @@ function Article({ article, setTagList }) {
             <IconButton
               color="primary"
               aria-label="add to list"
-              onClick={() => addToList(id, name, sourceUrl)}
+              onClick={() => addToList(article)}
               disabled={isItemInList(id)}
             >
               <Grid container spacing={1}>

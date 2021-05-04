@@ -4,15 +4,16 @@ const articleStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     margin: 10,
-    padding: 10
+    padding: 10,
+    
   },
   details: {
     display: 'flex',
     flexDirection: 'column',
-    margin: 5
+    margin: 5,
   },
   description: {
-    marginTop: 10
+    marginTop: 10,
   },
   content: {
     flex: '1 0 auto',
@@ -21,18 +22,18 @@ const articleStyles = makeStyles(theme => ({
   },
   chip: {
     margin: 10,
-    marginLeft: 0
+    marginLeft: 0,
   },
   large: {
     margin: 5,
     width: '70%',
     height: '70%',
     justify: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   addToList: {
-    padding: 10
-  }
+    padding: 10,
+  },
 }))
 
 export default articleStyles

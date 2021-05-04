@@ -1,22 +1,23 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { observer } from 'mobx-react'
+import { Link, useParams } from 'react-router-dom'
 import { TextField, Grid, Typography, Paper } from '@material-ui/core'
 import Submit from '../components/Submit'
 import ContinueToBrowse from '../components/ContinueToBrowse'
 import useAuth from '../hooks/useAuth'
 import '../App.css'
 
-function RegisterPage() {
+function ResetPassword() {
 	const {
-		username,
 		password,
-		email,
 		confirm,
 		errors,
 		setInputValue,
 		buttonDisabled,
-		doRegister,
+		updatePassword,
 	} = useAuth()
+	
+	const { token } = useParams()
 
 	return (
 		<>
@@ -37,45 +38,23 @@ function RegisterPage() {
 						>
 							<Grid item>
 								<ul className="validation-errors">
-									{Object.values(errors).map((error, idx) => (
-										<li key={idx}>{error}</li>
-									))}
+									{Object.values(errors).map((error, idx) => {
+										return <li key={idx}>{error}</li>
+									})}
 								</ul>
 								<Typography variant="h5" gutterBottom>
-									Sign Up
+									Reset Password
 								</Typography>
 							</Grid>
 							<Grid item>
-								<form>
+								<form onSubmit={() => updatePassword(token)}>
 									<Grid container direction="column" spacing={2}>
-										<Grid item>
-											<TextField
-												required
-												name="username"
-												label="username"
-												autoComplete="username"
-												variant="outlined"
-												value={username ? username : ''}
-												onChange={setInputValue}
-											/>
-										</Grid>
-										<Grid item>
-											<TextField
-												required
-												name="email"
-												label="email"
-												autoComplete="email"
-												variant="outlined"
-												value={email ? email : ''}
-												onChange={setInputValue}
-											/>
-										</Grid>
 										<Grid item>
 											<TextField
 												required
 												name="password"
 												type="password"
-												label="password"
+												label="new password"
 												autoComplete="password"
 												variant="outlined"
 												value={password ? password : ''}
@@ -95,19 +74,20 @@ function RegisterPage() {
 											/>
 										</Grid>
 										<Grid item>
-											<Submit
-												text="Register"
+											{/*<Submit
+												text="Reset Password"
 												color="primary"
 												disabled={buttonDisabled}
-												onClick={() => doRegister()}
-											/>
+												onClick={() => updatePassword(token)}
+											/>*/}
+											<input type="submit" value="Reset Password" />
 										</Grid>
 									</Grid>
 								</form>
 							</Grid>
 							<Grid item>
 								<Typography variant="subtitle1">
-									Already a member? <Link to="/login">Log In</Link>
+									Know your password? <Link to="/login">Log In</Link>
 								</Typography>
 							</Grid>
 						</Paper>
@@ -115,7 +95,8 @@ function RegisterPage() {
 				</Grid>
 			</Grid>
 		</>
+		// HANDLE ERRORS
 	)
 }
 
-export default RegisterPage
+export default observer(ResetPassword)

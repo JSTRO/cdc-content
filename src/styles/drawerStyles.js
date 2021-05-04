@@ -1,8 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const DRAWER_WIDTH = 360;
+const DRAWER_WIDTH = 360
 
-const drawerStyles = makeStyles((theme) => ({
+const drawerStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
@@ -40,7 +40,7 @@ const drawerStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
     margin: 10,
-    padding: 0
+    padding: 0,
   },
   cardContent: {
     display: 'flex',
@@ -71,6 +71,6 @@ const drawerStyles = makeStyles((theme) => ({
     }),
     marginRight: 0,
   },
-}));
+}))
 
 export default drawerStyles

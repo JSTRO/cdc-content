@@ -4,11 +4,11 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(() => ({
   chip: {
-    margin: 10
-  }
+    margin: 10,
+  },
 }))
 
-function TagWithDelete({tag, setTagList}) {
+function TagWithDelete({ tag, setTagList }) {
   const classes = useStyles()
 
   const handleDelete = () => {
@@ -16,7 +16,7 @@ function TagWithDelete({tag, setTagList}) {
   }
 
   return (
-    <Chip 
+    <Chip
       className={classes.chip}
       size="small"
       variant="outlined"

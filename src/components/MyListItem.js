@@ -1,60 +1,57 @@
 import React from 'react'
 import UserStore from '../stores/UserStore'
 import { observer } from 'mobx-react'
-import Grid from '@material-ui/core/Grid'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import Link from '@material-ui/core/Link'
-import ListItem from '@material-ui/core/ListItem'
-import IconButton from '@material-ui/core/IconButton'
+import {
+  Avatar,
+  Grid,
+  Card,
+  CardContent,
+  Link,
+  IconButton,
+  Typography,
+} from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
-import { makeStyles } from '@material-ui/core/styles'
+import DOMPurify from 'dompurify'
+import formatDate from '../utils/formatDate.js'
+import myListItemStyles from '../styles/myListItemStyles'
 import '../App.css'
 
-const useStyles = makeStyles((theme) => ({
-  details: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  card: {
-    margin: 10,
-    padding: 0
-  },
-  cardContent: {
-    display: 'flex',
-    flex: '1 0 auto',
-    maxWidth: 1000,
-  },
-}))
-
-function MyListItem({item}) {
-
-  const classes = useStyles()
+function MyListItem({ item }) {
+  const classes = myListItemStyles()
   const { deleteListItem } = UserStore
+  const { name, thumbnailUrl, sourceUrl, owningOrgId, datePublished } = item
+  const sanitizedName = { __html: DOMPurify.sanitize(name) }
 
   return (
     <Card className={classes.card} variant="outlined">
       <div className={classes.details}>
         <CardContent className={classes.cardContent}>
-          <Grid container spacing={1}>
-            <Grid item xs={11}>
-              <ListItem>
+          <Grid container spacing={2}>
+            <Grid item xs={2}>
+              <Avatar alt={thumbnailUrl} src={thumbnailUrl} variant="square" />
+            </Grid>
+            <Grid item xs={9}>
+              <Typography variant="subtitle1" gutterBottom>
                 <Link
-                  color="inherit"
-                  href={item ? item.sourceUrl : ""}
+                  href={sourceUrl}
                   target="blank"
+                  color="inherit"
                   underline="none"
-                > 
-                  {item.name}
-                </Link>
-              </ListItem>
+                  dangerouslySetInnerHTML={sanitizedName}
+                />
+              </Typography>
+              <Typography color="textSecondary" gutterBottom>
+                {owningOrgId
+                  ? `${owningOrgId} • ${formatDate(datePublished)}`
+                  : formatDate(datePublished)}
+              </Typography>
             </Grid>
             <Grid item xs={1}>
-              <IconButton 
-                aria-label="delete" 
+              <IconButton
+                aria-label="delete"
                 onClick={() => deleteListItem(item.listID)}
               >
-                <DeleteIcon className="delete-icon"/>
+                <DeleteIcon className="delete-icon" />
               </IconButton>
             </Grid>
           </Grid>

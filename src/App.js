@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react'
-import { Switch, Route, Redirect, BrowserRouter as Router } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import { observer } from 'mobx-react'
 import UserStore from './stores/UserStore'
-import Login from './components/Login'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+import PasswordSent from './pages/PasswordSent'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 import Search from './components/Search'
 import ArticleList from './components/ArticleList'
 import TagWithDelete from './components/TagWithDelete'
 import Footer from './components/Footer'
 import DrawerRight from './components/DrawerRight'
-import Grid from '@material-ui/core/Grid'
 import Pagination from '@material-ui/lab/Pagination'
 import useAPI from './hooks/useAPI'
 import './App.css'
@@ -38,7 +41,7 @@ function App() {
         <p>Loading...</p>
       </div>
     )
-  } 
+  }
 
   return (
     <div className="App">
@@ -46,14 +49,15 @@ function App() {
         <Switch>
           <Route exact path="/">
             <DrawerRight search={search} setSearch={setSearch} />
-            <Grid container spacing={3}>
-              <Grid item xs={6}>
-                <Search search={search} setSearch={setSearch}/>
-              </Grid> 
-              <Grid item xs={6}>
-                <Pagination count={pageCount} color="primary" onChange={handleChange}/>
-              </Grid>
-            </Grid> 
+            <Search search={search} setSearch={setSearch}/>
+            <Pagination 
+              className="pagination"
+              count={pageCount} 
+              color="primary" 
+              onChange={handleChange}
+              showFirstButton
+              showLastButton
+            />
             {tagList.map(tag => (
               <TagWithDelete
                 tag={tag}
@@ -65,12 +69,15 @@ function App() {
               currentArticles={currentArticles}
             />
           </Route>
-          <Route exact path="/login">
-            {UserStore.isLoggedIn ? <Redirect to="/" /> : <Login />}
-          </Route>  
-          <Route exact path="/register" >
-            {UserStore.isLoggedIn ? <Redirect to="/" /> : <Login />}
-          </Route>
+          {UserStore.isLoggedIn ? <Redirect to="/" /> : 
+            <>
+              <Route exact path="/login" component={LoginPage} />
+              <Route exact path="/register" component={RegisterPage} />
+              <Route exact path="/forgot" component={ForgotPassword} />
+              <Route exact path="/sent" component = {PasswordSent} />
+              <Route exact path="/reset/:token" component = {ResetPassword} />
+            </>
+          } 
         </Switch>
         {currentArticles.length > 0 && <Footer />} 
       </Router>  

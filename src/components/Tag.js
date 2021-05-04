@@ -4,19 +4,21 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(() => ({
   chip: {
-    margin: 10
-  }
+    margin: 4,
+  },
 }))
 
-function Tag({tag, setTagList}) {
+function Tag({ tag, setTagList }) {
   const classes = useStyles()
 
   const handleTag = () => {
-    setTagList(prev => prev.includes(tag) ? prev : [...prev, tag])
+    setTagList(prev =>
+      prev.some(prevTag => prevTag.id === tag.id) ? prev : [...prev, tag]
+    )
   }
 
   return (
-    <Chip 
+    <Chip
       className={classes.chip}
       size="small"
       variant="outlined"

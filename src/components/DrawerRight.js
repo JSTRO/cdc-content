@@ -2,38 +2,42 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import UserStore from '../stores/UserStore'
 import { observer } from 'mobx-react'
+import {
+  AppBar,
+  Button,
+  CssBaseline,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  Typography,
+} from '@material-ui/core'
 import clsx from 'clsx'
 import drawerStyles from '../styles/drawerStyles'
 import { useTheme } from '@material-ui/core/styles'
-import Drawer from '@material-ui/core/Drawer'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import List from '@material-ui/core/List'
-import MyList from './MyList'
-import Typography from '@material-ui/core/Typography'
-import Divider from '@material-ui/core/Divider'
-import IconButton from '@material-ui/core/IconButton'
-import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
 import InboxIcon from '@material-ui/icons/MoveToInbox'
+import MenuIcon from '@material-ui/icons/Menu'
+import MyList from './MyList'
 import Submit from './Submit'
 
 function DrawerRight({ search, setSearch }) {
   const classes = drawerStyles()
   const theme = useTheme()
   const [open, setOpen] = useState(false)
+  const { isLoggedIn, username, logout } = UserStore
 
   const handleDrawerOpen = () => {
-    setOpen(true);
+    setOpen(true)
   }
 
   const handleDrawerClose = () => {
-    setOpen(false);
+    setOpen(false)
   }
 
   return (
@@ -66,7 +70,6 @@ function DrawerRight({ search, setSearch }) {
         })}
       >
         <div className={classes.drawerHeader} />
-     
       </main>
       <Drawer
         className={classes.drawer}
@@ -79,12 +82,19 @@ function DrawerRight({ search, setSearch }) {
       >
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            {theme.direction === 'rtl' ? (
+              <ChevronLeftIcon />
+            ) : (
+              <ChevronRightIcon />
+            )}
           </IconButton>
-          {UserStore.isLoggedIn ? 
-            <p>Welcome, {UserStore.username}</p> : 
-            <p>Log in or create an account below to save articles to your list!</p>
-          }
+          {isLoggedIn ? (
+            <p>
+              Welcome, <strong>{username}</strong>
+            </p>
+          ) : (
+            <p>Log in or sign up below to save articles to your list!</p>
+          )}
         </div>
         <Divider />
         <List>
@@ -92,41 +102,56 @@ function DrawerRight({ search, setSearch }) {
             <ListItemIcon>
               <InboxIcon />
             </ListItemIcon>
-            <ListItemText primary="My List"/>
+            <ListItemText primary="My List" />
           </ListItem>
-          {UserStore.isLoggedIn && <MyList />}
+          {isLoggedIn && <MyList />}
         </List>
         <Divider />
-          <List>
-            {UserStore.isLoggedIn ?
-              <ListItem>
-                <ListItemText>
-                  <Submit 
-                    text={'Log Out'} 
-                    color="secondary"
-                    disabed={false} 
-                    onClick={() => UserStore.logout()}
-                  />
-                </ListItemText>
-              </ListItem> :
+        <List>
+          {isLoggedIn ? (
+            <ListItem>
+              <ListItemText>
+                <Submit
+                  text={'Log Out'}
+                  color="secondary"
+                  disabed={false}
+                  onClick={() => logout()}
+                />
+              </ListItemText>
+            </ListItem>
+          ) : (
             <>
               <ListItem>
                 <ListItemText>
-                  <Link to="/login">
-                    Log In
-                   </Link> 
+                  <Link to="/login" style={{ textDecoration: 'none' }}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      className="button-block"
+                    >
+                      Log In
+                    </Button>
+                  </Link>
                 </ListItemText>
-              </ListItem> 
+              </ListItem>
               <ListItem>
                 <ListItemText>
-                  <Link to="/register">
-                    Sign Up
-                  </Link> 
+                  <Link to="/register" style={{ textDecoration: 'none' }}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      className="button-block"
+                    >
+                      Sign Up
+                    </Button>
+                  </Link>
                 </ListItemText>
               </ListItem>
             </>
-          }
-          </List> 
+          )}
+        </List>
       </Drawer>
     </div>
   )

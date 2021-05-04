@@ -1,20 +1,9 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& > *': {
-      margin: theme.spacing(1),
-    },
-  },
-}))
-
-function Submit({text, disabled, color, onClick}) {
-	const classes = useStyles()
-
+function Submit({ text, disabled, color, onClick }) {
 	return (
-		<div className={classes.root}>
+		<div>
 			<Button
 				variant="contained"
 				color={color}
@@ -22,8 +11,8 @@ function Submit({text, disabled, color, onClick}) {
 				className="button-block"
 				disabled={disabled}
 				onClick={() => onClick()}
-				>
-					{text}
+			>
+				{text}
 			</Button>
 		</div>
 	)

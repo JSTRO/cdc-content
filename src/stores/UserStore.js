@@ -2,43 +2,45 @@ import { extendObservable, runInAction } from 'mobx'
 import axios from 'axios'
 
 class UserStore {
-	constructor() {
-		extendObservable(this, {
-			loading: true,
-			isLoggedIn: false,
-			username: '',
-			list: []
-		})
-	}
+  constructor() {
+    extendObservable(this, {
+      loading: true,
+      isLoggedIn: false,
+      username: '',
+      email: '',
+      token: '',
+      expiration: '',
+      list: [],
+    })
+  }
 
   checkIsLoggedIn = async () => {
     try {
       let res = await axios({
         url: '/isLoggedIn',
         method: 'post',
-        headers: { 
-          'Accept': 'application/json', 
-          'Content-Type': 'application/json' 
-        }
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
       })
-      
+
       let result = await res.data
-      
+
       if (result && result.success) {
         runInAction(() => {
           this.loading = false
           this.isLoggedIn = true
           this.username = result.username
           this.getListItems()
-        })  
+        })
       } else {
         runInAction(() => {
           this.loading = false
           this.isLoggedIn = false
         })
       }
-      
-    } catch(err) {
+    } catch (err) {
       runInAction(() => {
         this.loading = false
         this.isLoggedIn = false
@@ -51,61 +53,70 @@ class UserStore {
       let res = await axios({
         url: '/logout',
         method: 'post',
-        headers: { 
-          'Accept': 'application/json', 
-          'Content-Type': 'application/json' 
-        }
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
       })
 
       let result = await res.data
-      
+
       if (result && result.success) {
         runInAction(() => {
           this.isLoggedIn = false
           this.username = ''
-        }) 
-      } 
-    } catch(err) {
+        })
+      }
+    } catch (err) {
       runInAction(() => {
         console.log(err)
-      })  
+      })
     }
-  } 
+  }
 
-	getListItems = async () => { 
+  getListItems = async () => {
     try {
       let res = await axios({
         url: '/list',
         method: 'get',
         params: {
-          username: this.username
-        }
+          username: this.username,
+        },
       })
 
       let result = await res.data
 
       if (result && result.success) {
-      	runInAction(() => {
-        	this.loading = false
-        	this.list = result.data
-      	})
+        runInAction(() => {
+          this.list = result.data
+          this.loading = false
+        })
       } else {
-      	runInAction(() => {
-        	this.loading = false
+        runInAction(() => {
+          this.loading = false
         })
       }
     } catch (err) {
-    	runInAction(() => {
-	      this.loading = false
-    	})
+      runInAction(() => {
+        this.loading = false
+      })
     }
   }
 
-  isItemInList = (id) => {
+  isItemInList = id => {
     return this.list.some(item => item.listID === id)
   }
 
-  addToList = async (listID, name, sourceUrl) => {
+  addToList = async listItem => {
+    let {
+      id,
+      name,
+      sourceUrl,
+      thumbnailUrl,
+      datePublished,
+      owningOrgId,
+    } = listItem
+
     try {
       let res = await axios({
         url: '/list',
@@ -116,9 +127,12 @@ class UserStore {
         },
         data: JSON.stringify({
           username: this.username,
-          listID: listID,
-          name: name,
-          sourceUrl: sourceUrl
+          listID: id,
+          name,
+          sourceUrl,
+          thumbnailUrl,
+          datePublished,
+          owningOrgId,
         }),
       })
 
@@ -146,7 +160,7 @@ class UserStore {
     }
   }
 
-  deleteListItem = async (id) => { 
+  deleteListItem = async id => {
     try {
       let res = await axios({
         url: '/list',
@@ -157,8 +171,8 @@ class UserStore {
         },
         params: {
           username: this.username,
-          listID: id
-        }
+          listID: id,
+        },
       })
 
       let result = await res.data
