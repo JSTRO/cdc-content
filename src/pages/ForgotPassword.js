@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { TextField, Grid, Typography, Paper } from '@material-ui/core'
 import Submit from '../components/Submit'
 import ContinueToBrowse from '../components/ContinueToBrowse'
-import { observer } from 'mobx-react'
-import useAuth from '../hooks/useAuth'
+import { AuthContext } from '../context/authContext'
+import { FormContext } from '../context/formContext'
 import '../App.css'
 
 function ForgotPassword() {
-	const { email, errors, setInputValue, buttonDisabled, resetPassword } = useAuth()
+	
+	const {errors, buttonDisabled, handleInputChange} = useContext(FormContext)
+	const {email, resetPassword} = useContext(AuthContext)
 
 	return (
 		<>
@@ -27,11 +29,13 @@ function ForgotPassword() {
 							className="forgot-background"
 						>
 							<Grid item>
-								<ul className="validation-errors">
-									{Object.values(errors).map((error, idx) => (
-										<li key={idx}>{error}</li>
-									))}
-								</ul>
+								{errors &&
+									<ul className="validation-errors">
+										{errors.map((error, idx) => (
+											<li key={idx}>{error}</li>
+										))}
+									</ul>
+								}
 								<Typography variant="h5" gutterBottom>
 									Reset Password
 								</Typography>
@@ -47,7 +51,7 @@ function ForgotPassword() {
 												autoComplete="email"
 												variant="outlined"
 												value={email ? email : ''}
-												onChange={setInputValue}
+												onChange={handleInputChange}
 											/>
 										</Grid>
 										<Grid item>
@@ -69,4 +73,4 @@ function ForgotPassword() {
 	)
 }
 
-export default observer(ForgotPassword)
+export default ForgotPassword

@@ -1,21 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { TextField, Grid, Typography, Paper } from '@material-ui/core'
 import Submit from '../components/Submit'
 import ContinueToBrowse from '../components/ContinueToBrowse'
-import { observer } from 'mobx-react'
-import useAuth from '../hooks/useAuth'
+import { AuthContext } from '../context/authContext'
+import { FormContext } from '../context/formContext'
 import '../App.css'
 
-function LoginPage() {
-	const {
-		username,
-		password,
-		errors,
-		setInputValue,
-		buttonDisabled,
-		doLogin,
-	} = useAuth()
+function LoginPage(props) {
+
+	const {username, password, doLogin} = useContext(AuthContext)
+	const {errors, buttonDisabled, handleInputChange, resetForm} = useContext(FormContext)
 
 	return (
 		<>
@@ -35,11 +30,13 @@ function LoginPage() {
 							className="login-background"
 						>
 							<Grid item>
-								<ul className="validation-errors">
-									{Object.values(errors).map((error, idx) => (
-										<li key={idx}>{error}</li>
-									))}
-								</ul>
+							{errors &&
+									<ul className="validation-errors">
+										{errors.map((error, idx) => (
+											<li key={idx}>{error}</li>
+										))}
+									</ul>
+								}
 								<Typography variant="h5" gutterBottom>
 									Log In
 								</Typography>
@@ -54,8 +51,8 @@ function LoginPage() {
 												label="username"
 												autoComplete="username"
 												variant="outlined"
-												value={username ? username : ''}
-												onChange={setInputValue}
+												value={username}
+												onChange={handleInputChange}
 											/>
 										</Grid>
 										<Grid item>
@@ -66,8 +63,8 @@ function LoginPage() {
 												label="password"
 												autoComplete="password"
 												variant="outlined"
-												value={password ? password : ''}
-												onChange={setInputValue}
+												value={password}
+												onChange={handleInputChange}
 											/>
 										</Grid>
 										<Grid item>
@@ -97,4 +94,4 @@ function LoginPage() {
 	)
 }
 
-export default observer(LoginPage)
+export default LoginPage

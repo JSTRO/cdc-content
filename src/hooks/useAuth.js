@@ -11,6 +11,13 @@ const useAuth = () => {
 	const [errors, setErrors] = useState({})
 	const [buttonDisabled, setButtonDisabled] = useState(false)
 
+	const [loading, setLoading] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [token, setToken] = useState('')
+  const [expiration, setExpiration] = useState('')
+  const [list, setList] = useState([])
+
+
 	const history = useHistory()
 
 	const setInputValue = event => {
@@ -96,8 +103,8 @@ const useAuth = () => {
 			let result = await res.data
 
 			if (result && result.success) {
-				UserStore.isLoggedIn = true
-				UserStore.username = result.username
+				setIsLoggedIn(true)
+				setUsername(result.username)
 			} else if (result && result.success === false) {
 				resetForm()
 				setErrors({[result.error]: result.msg})
@@ -127,8 +134,8 @@ const useAuth = () => {
 			let result = await res.data
 
 			if (result && result.success) {
-				UserStore.email = result.email
-				UserStore.expiration = result.expiration
+				setEmail(result.email)
+				setExpiration(result.expiration)
 				history.replace('sent')
 			} else if (result && result.success === false) {
 				resetForm()
@@ -173,6 +180,156 @@ const useAuth = () => {
 		}
   }
 
+  const checkIsLoggedIn = async () => {
+    try {
+      let res = await axios({
+        url: '/isLoggedIn',
+        method: 'post',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+
+      let result = await res.data
+
+      if (result && result.success) {
+          setLoading(false)
+          setIsLoggedIn(true)
+          setUsername(result.username)
+          getListItems()
+      } else {
+          setLoading(false)
+          setIsLoggedIn(false)
+      }
+    } catch (err) {
+        setLoading(false)
+        setIsLoggedIn(false)
+    }
+  }
+
+  const logout = async () => {
+    try {
+      let res = await axios({
+        url: '/logout',
+        method: 'post',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+
+      let result = await res.data
+
+      if (result && result.success) {
+        setIsLoggedIn(false)
+        setUsername('')
+      }
+    } catch (err) {
+        console.log(err)
+    }
+  }
+
+  const getListItems = async () => {
+    try {
+      let res = await axios({
+        url: '/list',
+        method: 'get',
+        params: {
+          username: username,
+        },
+      })
+
+      let result = await res.data
+
+      if (result && result.success) {
+          setList(list => [...list, ...result.data])
+          setLoading(false)
+      } else {
+          setLoading(false)
+      }
+    } catch (err) {
+        setLoading(false)
+    }
+  }
+
+  const isItemInList = id => {
+    return list.some(item => item.listID === id)
+  }
+
+  const addToList = async listItem => {
+    let {
+      id,
+      name,
+      sourceUrl,
+      thumbnailUrl,
+      datePublished,
+      owningOrgId,
+    } = listItem
+
+    try {
+      let res = await axios({
+        url: '/list',
+        method: 'post',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        data: JSON.stringify({
+          username,
+          listID: id,
+          name,
+          sourceUrl,
+          thumbnailUrl,
+          datePublished,
+          owningOrgId,
+        }),
+      })
+
+      let result = await res.data
+
+      if (result && result.success) {
+        if (isItemInList(id)) {
+            setLoading(false)
+        }
+          setLoading(false)
+          setList([...list, result])
+      } else {
+          setLoading(false)
+      }
+    } catch (err) {
+        setLoading(false)
+    }
+  }
+
+  const deleteListItem = async id => {
+    try {
+      let res = await axios({
+        url: '/list',
+        method: 'delete',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        params: {
+          username,
+          listID: id,
+        },
+      })
+
+      let result = await res.data
+
+      if (result && result.success) {
+          setLoading(false)
+          setList(list => list.filter(item => item.listID !== id))
+      } else {
+          setLoading(false)
+      }
+    } catch (err) {
+        setLoading(false)
+    }
+	}
+
 	return {
 		username,
 		password,
@@ -186,7 +343,16 @@ const useAuth = () => {
 		doLogin,
 		doRegister,
 		resetPassword,
-		updatePassword
+		updatePassword,
+		deleteListItem,
+		isLoggedIn,
+		checkIsLoggedIn,
+		logout,
+		addToList,
+		isItemInList,
+		loading,
+		expiration,
+		list
 	}
 }
 

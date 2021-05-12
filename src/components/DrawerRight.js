@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import UserStore from '../stores/UserStore'
+import useAuth from '../hooks/useAuth'
 import { observer } from 'mobx-react'
 import {
   AppBar,
@@ -26,11 +27,12 @@ import MenuIcon from '@material-ui/icons/Menu'
 import MyList from './MyList'
 import Submit from './Submit'
 
-function DrawerRight({ search, setSearch }) {
+function DrawerRight({ search, setSearch, isLoggedIn }) {
   const classes = drawerStyles()
   const theme = useTheme()
+
   const [open, setOpen] = useState(false)
-  const { isLoggedIn, username, logout } = UserStore
+  const { username, logout } = useAuth()
 
   const handleDrawerOpen = () => {
     setOpen(true)

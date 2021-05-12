@@ -14,6 +14,7 @@ import Footer from './components/Footer'
 import DrawerRight from './components/DrawerRight'
 import Pagination from '@material-ui/lab/Pagination'
 import useAPI from './hooks/useAPI'
+import useAuth from './hooks/useAuth'
 import './App.css'
 
 function App() {
@@ -27,15 +28,17 @@ function App() {
     setTagList
   } = useAPI()
 
+  const { loading, checkIsLoggedIn, isLoggedIn } = useAuth()
+
   useEffect(() => {
-    UserStore.checkIsLoggedIn()
+    checkIsLoggedIn()
   }, [])
 
   const handleChange = (event, value) => {
     setCurrentPage(value)
   }
 
-  if (UserStore.loading) {
+  if (loading) {
     return (
       <div className="App">
         <p>Loading...</p>
@@ -69,7 +72,7 @@ function App() {
               currentArticles={currentArticles}
             />
           </Route>
-          {UserStore.isLoggedIn ? <Redirect to="/" /> : 
+          {isLoggedIn ? <Redirect to="/" /> : 
             <>
               <Route exact path="/login" component={LoginPage} />
               <Route exact path="/register" component={RegisterPage} />

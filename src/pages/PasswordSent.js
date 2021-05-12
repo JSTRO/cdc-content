@@ -1,5 +1,4 @@
 import React from 'react'
-import { observer } from 'mobx-react'
 import ContinueToBrowse from '../components/ContinueToBrowse'
 import '../App.css'
 
@@ -15,4 +14,4 @@ function PasswordSent() {
 	)
 }
 
-export default observer(PasswordSent)
+export default PasswordSent

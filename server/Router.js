@@ -54,7 +54,7 @@ class Router {
 								} else {
 									res.json({
 										success: false,
-										error: 'password',
+										error: bcryptErr,
 										msg: 'Invalid password',
 									})
 								}
@@ -272,7 +272,7 @@ class Router {
 					error: 'confirm',
 					msg: 'Passwords do not match, please try again.',
 				})
-			} // MOVE VALIDATOR LOGIC TO SEPARATE FUNCTION
+			}
 
 			let pswrd = bcrypt.hashSync(password, 9)
 			let sql = `UPDATE user SET password = ? WHERE token = ? AND expiration > ? LIMIT 1`

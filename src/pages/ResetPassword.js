@@ -1,23 +1,17 @@
-import React from 'react'
-import { observer } from 'mobx-react'
+import React, { useContext } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { TextField, Grid, Typography, Paper } from '@material-ui/core'
 import Submit from '../components/Submit'
 import ContinueToBrowse from '../components/ContinueToBrowse'
-import useAuth from '../hooks/useAuth'
+import { AuthContext } from '../context/authContext'
+import { FormContext } from '../context/formContext'
 import '../App.css'
 
 function ResetPassword() {
-	const {
-		password,
-		confirm,
-		errors,
-		setInputValue,
-		buttonDisabled,
-		updatePassword,
-	} = useAuth()
-	
 	const { token } = useParams()
+
+	const {password, confirm, updatePassword} = useContext(AuthContext)
+	const {errors, buttonDisabled, handleInputChange} = useContext(FormContext)
 
 	return (
 		<>
@@ -37,11 +31,13 @@ function ResetPassword() {
 							className="login-background"
 						>
 							<Grid item>
-								<ul className="validation-errors">
-									{Object.values(errors).map((error, idx) => {
-										return <li key={idx}>{error}</li>
-									})}
-								</ul>
+								{errors &&
+									<ul className="validation-errors">
+										{errors.map((error, idx) => (
+											<li key={idx}>{error}</li>
+										))}
+									</ul>
+								}
 								<Typography variant="h5" gutterBottom>
 									Reset Password
 								</Typography>
@@ -58,7 +54,7 @@ function ResetPassword() {
 												autoComplete="password"
 												variant="outlined"
 												value={password ? password : ''}
-												onChange={setInputValue}
+												onChange={handleInputChange}
 											/>
 										</Grid>
 										<Grid item>
@@ -70,16 +66,16 @@ function ResetPassword() {
 												autoComplete="password"
 												variant="outlined"
 												value={confirm ? confirm : ''}
-												onChange={setInputValue}
+												onChange={handleInputChange}
 											/>
 										</Grid>
 										<Grid item>
-											{/*<Submit
+											<Submit
 												text="Reset Password"
 												color="primary"
 												disabled={buttonDisabled}
 												onClick={() => updatePassword(token)}
-											/>*/}
+											/>
 											<input type="submit" value="Reset Password" />
 										</Grid>
 									</Grid>
@@ -99,4 +95,4 @@ function ResetPassword() {
 	)
 }
 
-export default observer(ResetPassword)
+export default ResetPassword

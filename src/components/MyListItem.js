@@ -1,5 +1,6 @@
 import React from 'react'
 import UserStore from '../stores/UserStore'
+import useAuth from '../hooks/useAuth'
 import { observer } from 'mobx-react'
 import {
   Avatar,
@@ -18,7 +19,7 @@ import '../App.css'
 
 function MyListItem({ item }) {
   const classes = myListItemStyles()
-  const { deleteListItem } = UserStore
+  const { deleteListItem } = useAuth()
   const { name, thumbnailUrl, sourceUrl, owningOrgId, datePublished } = item
   const sanitizedName = { __html: DOMPurify.sanitize(name) }
 

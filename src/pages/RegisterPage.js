@@ -1,22 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { TextField, Grid, Typography, Paper } from '@material-ui/core'
 import Submit from '../components/Submit'
 import ContinueToBrowse from '../components/ContinueToBrowse'
-import useAuth from '../hooks/useAuth'
+import { AuthContext } from '../context/authContext'
+import { FormContext } from '../context/formContext'
 import '../App.css'
 
 function RegisterPage() {
-	const {
-		username,
-		password,
-		email,
-		confirm,
-		errors,
-		setInputValue,
-		buttonDisabled,
-		doRegister,
-	} = useAuth()
+	const {username, password, email, confirm, doRegister} = useContext(AuthContext)
+	const {errors, buttonDisabled, handleInputChange} = useContext(FormContext)
 
 	return (
 		<>
@@ -36,11 +29,13 @@ function RegisterPage() {
 							className="login-background"
 						>
 							<Grid item>
-								<ul className="validation-errors">
-									{Object.values(errors).map((error, idx) => (
-										<li key={idx}>{error}</li>
-									))}
-								</ul>
+								{errors &&
+									<ul className="validation-errors">
+										{errors.map((error, idx) => (
+											<li key={idx}>{error}</li>
+										))}
+									</ul>
+								}
 								<Typography variant="h5" gutterBottom>
 									Sign Up
 								</Typography>
@@ -56,7 +51,7 @@ function RegisterPage() {
 												autoComplete="username"
 												variant="outlined"
 												value={username ? username : ''}
-												onChange={setInputValue}
+												onChange={handleInputChange}
 											/>
 										</Grid>
 										<Grid item>
@@ -67,7 +62,7 @@ function RegisterPage() {
 												autoComplete="email"
 												variant="outlined"
 												value={email ? email : ''}
-												onChange={setInputValue}
+												onChange={handleInputChange}
 											/>
 										</Grid>
 										<Grid item>
@@ -79,7 +74,7 @@ function RegisterPage() {
 												autoComplete="password"
 												variant="outlined"
 												value={password ? password : ''}
-												onChange={setInputValue}
+												onChange={handleInputChange}
 											/>
 										</Grid>
 										<Grid item>
@@ -91,7 +86,7 @@ function RegisterPage() {
 												autoComplete="password"
 												variant="outlined"
 												value={confirm ? confirm : ''}
-												onChange={setInputValue}
+												onChange={handleInputChange}
 											/>
 										</Grid>
 										<Grid item>

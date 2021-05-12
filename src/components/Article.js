@@ -12,6 +12,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle'
 import Tag from './Tag'
 import DOMPurify from 'dompurify'
 import UserStore from '../stores/UserStore'
+import useAuth from '../hooks/useAuth'
 import { observer } from 'mobx-react'
 import formatDate from '../utils/formatDate.js'
 import articleStyles from '../styles/articleStyles'
@@ -29,7 +30,7 @@ function Article({ article, setTagList }) {
     thumbnailUrl,
   } = article
   const sanitizedName = { __html: DOMPurify.sanitize(name) }
-  const { isLoggedIn, addToList, isItemInList } = UserStore
+  const { isLoggedIn, addToList, isItemInList } = useAuth()
   const chips = tags.map(tag => (
     <Tag key={tag.id} tag={tag} setTagList={setTagList} />
   ))
