@@ -22,6 +22,7 @@ const drawerStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
+    paddingRight: '0%'
   },
   hide: {
     display: 'none',
@@ -71,6 +72,10 @@ const drawerStyles = makeStyles(theme => ({
     }),
     marginRight: 0,
   },
+  // menuIcon: {
+  //   marginLeft: '150%',
+  //   marginRight: '10%'
+  // }
 }))
 
 export default drawerStyles

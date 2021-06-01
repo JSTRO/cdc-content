@@ -1,19 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   Card,
   CardContent,
   Typography,
   Grid,
   Link,
-  IconButton,
-  Avatar,
+  IconButton
 } from '@material-ui/core'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
 import Tag from './Tag'
 import DOMPurify from 'dompurify'
-import UserStore from '../stores/UserStore'
-import useAuth from '../hooks/useAuth'
-import { observer } from 'mobx-react'
+import { AuthContext } from '../context/authContext'
 import formatDate from '../utils/formatDate.js'
 import articleStyles from '../styles/articleStyles'
 
@@ -26,12 +23,11 @@ function Article({ article, setTagList }) {
     datePublished,
     tags,
     owningOrgId,
-    sourceUrl,
-    thumbnailUrl,
+    sourceUrl
   } = article
-  const sanitizedName = { __html: DOMPurify.sanitize(name) }
-  const { isLoggedIn, addToList, isItemInList } = useAuth()
-  const chips = tags.map(tag => (
+  const sanitizedName = {__html: DOMPurify.sanitize(name)}
+  const {isLoggedIn, addToList, isItemInList} = useContext(AuthContext)
+  const chips = tags.slice(0, 5).map(tag => (
     <Tag key={tag.id} tag={tag} setTagList={setTagList} />
   ))
 
@@ -40,16 +36,16 @@ function Article({ article, setTagList }) {
       <div className={classes.details}>
         <CardContent className={classes.content}>
           <Grid container spacing={1}>
-            <Grid item sm={3}>
+            {/*<Grid item sm={3}>
               <Avatar
                 alt={thumbnailUrl}
                 src={thumbnailUrl}
                 variant="square"
                 className={classes.large}
               />
-            </Grid>
+            </Grid>*/}
             <Grid item sm={9}>
-              <Typography variant="h6" component="h2" gutterBottom>
+              <Typography variant="subtitle1" component="h2" gutterBottom>
                 <Link
                   href={sourceUrl}
                   target="blank"
@@ -66,7 +62,7 @@ function Article({ article, setTagList }) {
               {chips}
             </Grid>
           </Grid>
-          <Typography className={classes.description}>{description}</Typography>
+          <Typography className={classes.description} variant="subtitle2">{description}</Typography>
           {isLoggedIn && (
             <IconButton
               color="primary"
@@ -92,4 +88,4 @@ function Article({ article, setTagList }) {
   )
 }
 
-export default observer(Article)
+export default Article

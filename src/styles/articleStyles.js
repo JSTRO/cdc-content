@@ -4,8 +4,7 @@ const articleStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     margin: 10,
-    padding: 10,
-    
+    fontFamily: 'Tahoma'
   },
   details: {
     display: 'flex',
@@ -18,7 +17,6 @@ const articleStyles = makeStyles(theme => ({
   content: {
     flex: '1 0 auto',
     maxWidth: 1000,
-    padding: 20,
   },
   chip: {
     margin: 10,
@@ -30,9 +28,6 @@ const articleStyles = makeStyles(theme => ({
     height: '70%',
     justify: 'center',
     alignItems: 'center',
-  },
-  addToList: {
-    padding: 10,
   },
 }))
 

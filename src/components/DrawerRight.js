@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
-import UserStore from '../stores/UserStore'
-import useAuth from '../hooks/useAuth'
-import { observer } from 'mobx-react'
+import { AuthContext } from '../context/authContext'
 import {
   AppBar,
   Button,
@@ -24,15 +22,16 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import InboxIcon from '@material-ui/icons/MoveToInbox'
 import MenuIcon from '@material-ui/icons/Menu'
+import Search from './Search'
 import MyList from './MyList'
 import Submit from './Submit'
 
-function DrawerRight({ search, setSearch, isLoggedIn }) {
+function DrawerRight({ search, setSearch }) {
   const classes = drawerStyles()
   const theme = useTheme()
 
   const [open, setOpen] = useState(false)
-  const { username, logout } = useAuth()
+  const {username, logout, isLoggedIn} = useContext(AuthContext)
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -55,6 +54,7 @@ function DrawerRight({ search, setSearch, isLoggedIn }) {
           <Typography variant="h6" noWrap className={classes.title}>
             CDC Content
           </Typography>
+          <Search search={search} setSearch={setSearch} />
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -62,7 +62,7 @@ function DrawerRight({ search, setSearch, isLoggedIn }) {
             onClick={handleDrawerOpen}
             className={clsx(open && classes.hide)}
           >
-            <MenuIcon />
+            <MenuIcon className={classes.menuIcon}/>
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -159,4 +159,4 @@ function DrawerRight({ search, setSearch, isLoggedIn }) {
   )
 }
 
-export default observer(DrawerRight)
+export default DrawerRight

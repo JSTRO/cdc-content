@@ -1,23 +1,19 @@
-import React from 'react'
-import UserStore from '../stores/UserStore'
-import useAuth from '../hooks/useAuth'
-import { observer } from 'mobx-react'
+import React, { useContext } from 'react'
 import MyListItem from './MyListItem'
+import { AuthContext } from '../context/authContext'
 
 function MyList() {
 
-	const { loading, list } = useAuth()
-
-	console.log(list)
+	const { loading, list } = useContext(AuthContext)
 
 	return (
 		<div>
 			{loading && 'Loading'}
-			{list.map(item => (
-				<MyListItem item={item} key={item.listID} />
+			{list && list.map((item, idx) => (
+				<MyListItem item={item} key={idx} />
 			))}
 		</div>
 	)
 }
 
-export default observer(MyList)
+export default MyList

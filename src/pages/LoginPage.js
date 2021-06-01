@@ -1,16 +1,20 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { TextField, Grid, Typography, Paper } from '@material-ui/core'
+import { Grid, Typography, Paper } from '@material-ui/core'
 import Submit from '../components/Submit'
 import ContinueToBrowse from '../components/ContinueToBrowse'
+import AuthField from '../components/AuthField'
 import { AuthContext } from '../context/authContext'
-import { FormContext } from '../context/formContext'
 import '../App.css'
 
 function LoginPage(props) {
+	const { username, password, doLogin, errors, buttonDisabled, resetForm } = useContext(
+		AuthContext
+	)
 
-	const {username, password, doLogin} = useContext(AuthContext)
-	const {errors, buttonDisabled, handleInputChange, resetForm} = useContext(FormContext)
+	useEffect(() => {
+		resetForm()
+	}, [])
 
 	return (
 		<>
@@ -27,16 +31,16 @@ function LoginPage(props) {
 						<Paper
 							variant="elevation"
 							elevation={2}
-							className="login-background"
+							className="auth-background"
 						>
 							<Grid item>
-							{errors &&
+								{errors && (
 									<ul className="validation-errors">
 										{errors.map((error, idx) => (
 											<li key={idx}>{error}</li>
 										))}
 									</ul>
-								}
+								)}
 								<Typography variant="h5" gutterBottom>
 									Log In
 								</Typography>
@@ -45,26 +49,13 @@ function LoginPage(props) {
 								<form>
 									<Grid container direction="column" spacing={2}>
 										<Grid item>
-											<TextField
-												required
-												name="username"
-												label="username"
-												autoComplete="username"
-												variant="outlined"
-												value={username}
-												onChange={handleInputChange}
-											/>
+											<AuthField name="username" value={username} />
 										</Grid>
 										<Grid item>
-											<TextField
-												required
+											<AuthField
 												name="password"
-												type="password"
-												label="password"
-												autoComplete="password"
-												variant="outlined"
 												value={password}
-												onChange={handleInputChange}
+												type="password"
 											/>
 										</Grid>
 										<Grid item>
@@ -83,9 +74,11 @@ function LoginPage(props) {
 									<Link to="/register">Sign Up</Link>
 								</Typography>
 							</Grid>
-								<Typography variant="subtitle1">
-									<Link to="/forgot" className="continue">Forgot Password?</Link>
-								</Typography>
+							<Typography variant="subtitle1">
+								<Link to="/forgot" className="continue">
+									Forgot Password?
+								</Link>
+							</Typography>
 						</Paper>
 					</Grid>
 				</Grid>

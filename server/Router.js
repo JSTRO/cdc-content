@@ -320,6 +320,8 @@ class Router {
 			} = req.body
 			datePublished = datePublished.slice(0, 10)
 
+			console.log('req.session',req.session)
+
 			if (req.session.userID) {
 				db.query(
 					sql,
@@ -363,9 +365,8 @@ class Router {
 
 	getListItems(app, db) {
 		const sql = `SELECT * from list WHERE username = ?`
-
 		app.get('/list', (req, res) => {
-			let username = req.query.username
+			let {username} = req.query
 			db.query(sql, [username], (err, rows) => {
 				if (err) {
 					res.json({
@@ -387,8 +388,8 @@ class Router {
 		const sql = `DELETE from list WHERE username = ? AND listID = ?`
 
 		app.delete('/list', (req, res) => {
-			let username = req.query.username
-			let listID = req.query.listID
+			let {username, listID} = req.query
+			
 			db.query(sql, [username, listID], (err, rows) => {
 				if (err) {
 					res.json({

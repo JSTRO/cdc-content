@@ -1,15 +1,20 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { TextField, Grid, Typography, Paper } from '@material-ui/core'
+import { Grid, Typography, Paper } from '@material-ui/core'
 import Submit from '../components/Submit'
 import ContinueToBrowse from '../components/ContinueToBrowse'
+import AuthField from '../components/AuthField'
 import { AuthContext } from '../context/authContext'
-import { FormContext } from '../context/formContext'
 import '../App.css'
 
 function RegisterPage() {
-	const {username, password, email, confirm, doRegister} = useContext(AuthContext)
-	const {errors, buttonDisabled, handleInputChange} = useContext(FormContext)
+	const {username, password, email, confirm, doRegister, errors, buttonDisabled, resetForm } = useContext(AuthContext)
+
+	useEffect(() => {
+		resetForm()
+	}, [])
+
+	console.log(errors)
 
 	return (
 		<>
@@ -26,7 +31,7 @@ function RegisterPage() {
 						<Paper
 							variant="elevation"
 							elevation={2}
-							className="login-background"
+							className="auth-background"
 						>
 							<Grid item>
 								{errors &&
@@ -44,50 +49,16 @@ function RegisterPage() {
 								<form>
 									<Grid container direction="column" spacing={2}>
 										<Grid item>
-											<TextField
-												required
-												name="username"
-												label="username"
-												autoComplete="username"
-												variant="outlined"
-												value={username ? username : ''}
-												onChange={handleInputChange}
-											/>
+											<AuthField name="username" value={username} />
 										</Grid>
 										<Grid item>
-											<TextField
-												required
-												name="email"
-												label="email"
-												autoComplete="email"
-												variant="outlined"
-												value={email ? email : ''}
-												onChange={handleInputChange}
-											/>
+											<AuthField name="email" value={email} />
 										</Grid>
 										<Grid item>
-											<TextField
-												required
-												name="password"
-												type="password"
-												label="password"
-												autoComplete="password"
-												variant="outlined"
-												value={password ? password : ''}
-												onChange={handleInputChange}
-											/>
+											<AuthField name="password" value={password} type="password" />
 										</Grid>
 										<Grid item>
-											<TextField
-												required
-												name="confirm"
-												label="confirm password"
-												type="password"
-												autoComplete="password"
-												variant="outlined"
-												value={confirm ? confirm : ''}
-												onChange={handleInputChange}
-											/>
+											<AuthField name="confirm" value={confirm} type="password" />
 										</Grid>
 										<Grid item>
 											<Submit

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { observer } from 'mobx-react'
 
 function ContinueToBrowse() {
 	return (
@@ -8,4 +7,4 @@ function ContinueToBrowse() {
   )
 }
 
-export default observer(ContinueToBrowse)
+export default ContinueToBrowse

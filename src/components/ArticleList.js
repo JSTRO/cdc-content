@@ -1,5 +1,4 @@
 import React from 'react'
-import { observer } from 'mobx-react'
 import Article from './Article'
 
 function ArticleList({ setTagList, currentArticles }) {
@@ -12,4 +11,4 @@ function ArticleList({ setTagList, currentArticles }) {
 	)
 }
 
-export default observer(ArticleList)
+export default ArticleList

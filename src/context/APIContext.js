@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-export default function useAPI(url = 'https://tools.cdc.gov/api/v2/resources/media') {
-  const [loading, setLoading] = useState(false)
+const APIContext = React.createContext()
+
+function APIContextProvider(props) {
+  const [resultsLoading, setResultsLoading] = useState(false)
   const [error, setError] = useState(false)
   const [articles, setArticles] = useState([])
   const [currentArticles, setCurrentArticles] = useState([])
@@ -19,10 +21,10 @@ export default function useAPI(url = 'https://tools.cdc.gov/api/v2/resources/med
 
   useEffect(() => {
     const getResults = async () => {
-      setLoading(true)
+      setResultsLoading(true)
       setError(false)
       try {
-        const res = await axios.get(url, {
+        const res = await axios.get(`https://tools.cdc.gov/api/v2/resources/media`, {
           params: {
             q: search,
             language: 'english',
@@ -32,13 +34,13 @@ export default function useAPI(url = 'https://tools.cdc.gov/api/v2/resources/med
           },
         })
         setArticles(res.data.results)
-        setLoading(false)
+        setResultsLoading(false)
       } catch (err) {
         setError(true)
       }
     }
     getResults()
-  }, [search, currentPage, indexOfFirstPost, max, url])
+  }, [search, currentPage, indexOfFirstPost, max])
 
   // set filtered articles
   useEffect(() => {
@@ -70,13 +72,22 @@ export default function useAPI(url = 'https://tools.cdc.gov/api/v2/resources/med
     )
   }, [filteredArticles, indexOfFirstPost, indexOfLastPost])
 
-  return {
-    setCurrentPage,
-    currentArticles,
-    search,
-    setSearch,
-    pageCount,
-    tagList,
-    setTagList,
-  }
+    const APIContextValue = {
+        setCurrentPage,
+        currentArticles,
+        search,
+        setSearch,
+        pageCount,
+        tagList,
+        setTagList,
+        resultsLoading
+    }
+
+    return (
+        <APIContext.Provider value={APIContextValue}>
+            {props.children}
+        </APIContext.Provider>
+    )
 }
+
+export { APIContextProvider, APIContext }

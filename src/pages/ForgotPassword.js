@@ -1,15 +1,38 @@
 import React, { useContext } from 'react'
-import { TextField, Grid, Typography, Paper } from '@material-ui/core'
+import { Grid, Typography, Paper } from '@material-ui/core'
 import Submit from '../components/Submit'
 import ContinueToBrowse from '../components/ContinueToBrowse'
+import AuthField from '../components/AuthField'
 import { AuthContext } from '../context/authContext'
-import { FormContext } from '../context/formContext'
 import '../App.css'
 
 function ForgotPassword() {
 	
-	const {errors, buttonDisabled, handleInputChange} = useContext(FormContext)
-	const {email, resetPassword} = useContext(AuthContext)
+	const {email, resetPassword, expiration, errors, buttonDisabled} = useContext(AuthContext)
+
+	console.log(Date.now(), expiration)
+
+	if (expiration <= Date.now()) {
+		return (
+			<>
+				<ContinueToBrowse />
+				<p className="password-sent">
+					An email has been sent with instructions for resetting your password. Please click the link in the email to proceed.
+				</p>
+			</>	
+		)
+	}
+
+	if (expiration > Date.now()) {
+		return (
+			<>
+				<ContinueToBrowse />
+				<p className="password-sent">
+					This link to reset your password has expired. Please return to the Reset Password page to proceed.
+				</p>
+			</>	
+		)
+	}
 
 	return (
 		<>
@@ -26,7 +49,7 @@ function ForgotPassword() {
 						<Paper
 							variant="elevation"
 							elevation={2}
-							className="forgot-background"
+							className="auth-background"
 						>
 							<Grid item>
 								{errors &&
@@ -44,15 +67,7 @@ function ForgotPassword() {
 								<form>
 									<Grid container direction="column" spacing={2}>
 										<Grid item>
-											<TextField
-												required
-												name="email"
-												label="email"
-												autoComplete="email"
-												variant="outlined"
-												value={email ? email : ''}
-												onChange={handleInputChange}
-											/>
+											<AuthField name="email" value={email} />
 										</Grid>
 										<Grid item>
 											<Submit

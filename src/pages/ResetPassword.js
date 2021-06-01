@@ -1,17 +1,27 @@
 import React, { useContext } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { TextField, Grid, Typography, Paper } from '@material-ui/core'
+import { Grid, Typography, Paper } from '@material-ui/core'
 import Submit from '../components/Submit'
 import ContinueToBrowse from '../components/ContinueToBrowse'
+import AuthField from '../components/AuthField'
 import { AuthContext } from '../context/authContext'
-import { FormContext } from '../context/formContext'
 import '../App.css'
 
 function ResetPassword() {
 	const { token } = useParams()
 
-	const {password, confirm, updatePassword} = useContext(AuthContext)
-	const {errors, buttonDisabled, handleInputChange} = useContext(FormContext)
+	const {password, confirm, updatePassword, resetSuccess, errors, buttonDisabled } = useContext(AuthContext)
+
+	if (resetSuccess) {
+		return (
+			<>
+				<ContinueToBrowse />
+				<p className="password-sent">
+					Your password has been successfully reset. Please navigate to the <Link to="/login"> Log In</Link> page to proceed.
+				</p>
+			</>	
+		)
+	}
 
 	return (
 		<>
@@ -28,7 +38,7 @@ function ResetPassword() {
 						<Paper
 							variant="elevation"
 							elevation={2}
-							className="login-background"
+							className="auth-background"
 						>
 							<Grid item>
 								{errors &&
@@ -43,43 +53,22 @@ function ResetPassword() {
 								</Typography>
 							</Grid>
 							<Grid item>
-								<form onSubmit={() => updatePassword(token)}>
-									<Grid container direction="column" spacing={2}>
-										<Grid item>
-											<TextField
-												required
-												name="password"
-												type="password"
-												label="new password"
-												autoComplete="password"
-												variant="outlined"
-												value={password ? password : ''}
-												onChange={handleInputChange}
-											/>
-										</Grid>
-										<Grid item>
-											<TextField
-												required
-												name="confirm"
-												label="confirm password"
-												type="password"
-												autoComplete="password"
-												variant="outlined"
-												value={confirm ? confirm : ''}
-												onChange={handleInputChange}
-											/>
-										</Grid>
-										<Grid item>
-											<Submit
-												text="Reset Password"
-												color="primary"
-												disabled={buttonDisabled}
-												onClick={() => updatePassword(token)}
-											/>
-											<input type="submit" value="Reset Password" />
-										</Grid>
+								<Grid container direction="column" spacing={2}>
+									<Grid item>
+										<AuthField name="password" value={password} type="password" />
 									</Grid>
-								</form>
+									<Grid item>
+										<AuthField name="confirm" value={confirm} type="password" />
+									</Grid>
+									<Grid item>
+										<Submit
+											text="Reset Password"
+											color="primary"
+											disabled={buttonDisabled}
+											onClick={() => updatePassword(token)}
+										/>
+									</Grid>
+								</Grid>
 							</Grid>
 							<Grid item>
 								<Typography variant="subtitle1">
