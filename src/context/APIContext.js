@@ -42,7 +42,7 @@ function APIContextProvider(props) {
     getResults()
   }, [search, currentPage, indexOfFirstPost, max])
 
-  // set filtered articles
+  // set filtered articles --> TAKE OUT FITLERED FUNCTION FROM USE EFFECT
   useEffect(() => {
     const filterByTags = results => {
       const isResultTagInList = resultTag =>
@@ -67,20 +67,22 @@ function APIContextProvider(props) {
 
   // set current articles
   useEffect(() => {
-    setCurrentArticles(
-      filteredArticles.slice(indexOfFirstPost, indexOfLastPost)
-    )
+    if (filteredArticles.length < indexOfFirstPost) {
+      setCurrentArticles(filteredArticles)
+    } else {
+      setCurrentArticles(filteredArticles.slice(indexOfFirstPost, indexOfLastPost))
+    }
   }, [filteredArticles, indexOfFirstPost, indexOfLastPost])
 
     const APIContextValue = {
         setCurrentPage,
+        currentPage,
         currentArticles,
         search,
         setSearch,
         pageCount,
         tagList,
         setTagList,
-        resultsLoading
     }
 
     return (

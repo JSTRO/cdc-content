@@ -28,7 +28,6 @@ function App() {
     pageCount,
     tagList,
     setTagList,
-    resultsLoading,
   } = useContext(APIContext)
 
   const {
@@ -40,7 +39,6 @@ function App() {
 
   const handlePagination = (event, page) => {
     setCurrentPage(page)
-    console.log(currentPage, page)
   }
 
   useEffect(() => {
@@ -51,16 +49,7 @@ function App() {
     getListItems()
   }, [username])
 
-  if (resultsLoading) {
-    return (
-      <div className="App">
-        <p>Loading...</p>
-      </div>
-    )
-  }
-
   return (
-
     <div className="App">
       <Router>
         <Switch>
@@ -76,6 +65,7 @@ function App() {
             <Pagination
               className="pagination"
               count={pageCount}
+              page={currentPage}
               color="primary"
               onChange={handlePagination}
               showFirstButton

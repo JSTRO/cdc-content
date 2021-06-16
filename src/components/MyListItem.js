@@ -26,9 +26,9 @@ function MyListItem({ item }) {
       <div className={classes.details}>
         <CardContent className={classes.cardContent}>
           <Grid container spacing={2}>
-            <Grid item xs={2}>
+            {/*<Grid item xs={2}>
               <Avatar alt={thumbnailUrl} src={thumbnailUrl} variant="square" />
-            </Grid>
+            </Grid>*/}
             <Grid item xs={9}>
               <Typography variant="subtitle1" gutterBottom>
                 <Link

@@ -57,8 +57,11 @@
 }
 
 .search {
-	width: 50%;
-	margin: 0px 22% 0px 0%;
+	width: 80%;
+}
+
+.toolbar {
+	justify-content: center;
 }
 
 .validation-errors {

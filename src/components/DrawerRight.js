@@ -8,6 +8,7 @@ import {
   Divider,
   Drawer,
   IconButton,
+  Grid,
   List,
   ListItem,
   ListItemIcon,
@@ -50,20 +51,28 @@ function DrawerRight({ search, setSearch }) {
           [classes.appBarShift]: open,
         })}
       >
-        <Toolbar>
-          <Typography variant="h6" noWrap className={classes.title}>
-            CDC Content
-          </Typography>
-          <Search search={search} setSearch={setSearch} />
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="end"
-            onClick={handleDrawerOpen}
-            className={clsx(open && classes.hide)}
-          >
-            <MenuIcon className={classes.menuIcon}/>
-          </IconButton>
+        <Toolbar className="toolbar">
+          <Grid container>
+            <Grid item sm={3}>
+              <Typography variant="h6" noWrap className={classes.title}>
+                CDC Content
+              </Typography>
+            </Grid>
+            <Grid item sm={8}>
+              <Search search={search} setSearch={setSearch} />
+            </Grid>
+            <Grid item sm={1}>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="end"
+                onClick={handleDrawerOpen}
+                className={clsx(open && classes.hide)}
+              >
+              <MenuIcon className={classes.menuIcon}/>
+              </IconButton>
+            </Grid>
+          </Grid>      
         </Toolbar>
       </AppBar>
       <main

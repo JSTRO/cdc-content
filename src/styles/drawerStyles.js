@@ -5,6 +5,7 @@ const DRAWER_WIDTH = 360
 const drawerStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
+    justifyContent: 'center'
   },
   appBar: {
     transition: theme.transitions.create(['margin', 'width'], {
@@ -22,7 +23,7 @@ const drawerStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
-    paddingRight: '0%'
+    // paddingRight: '0%'
   },
   hide: {
     display: 'none',
@@ -72,10 +73,6 @@ const drawerStyles = makeStyles(theme => ({
     }),
     marginRight: 0,
   },
-  // menuIcon: {
-  //   marginLeft: '150%',
-  //   marginRight: '10%'
-  // }
 }))
 
 export default drawerStyles
