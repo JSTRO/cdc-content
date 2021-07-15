@@ -1,14 +1,20 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect} from 'react'
 import MyListItem from './MyListItem'
 import { AuthContext } from '../context/authContext'
+import { ListContext } from '../context/listContext'
 
 function MyList() {
 
-	const { loading, list } = useContext(AuthContext)
+	const { listLoading, list, getListItems } = useContext(ListContext)
+	const { username } = useContext(AuthContext)
+
+	useEffect(() => {
+    getListItems()
+  }, [username])
 
 	return (
 		<div>
-			{loading && 'Loading'}
+			{listLoading && 'Loading'}
 			{list && list.map((item, idx) => (
 				<MyListItem item={item} key={idx} />
 			))}

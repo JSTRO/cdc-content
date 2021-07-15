@@ -9,12 +9,10 @@ function AuthContextProvider(props) {
     const [password, setPassword] = useState('')
     const [confirm, setConfirm] = useState('')
     const [resetSuccess, setResetSuccess] = useState(false)
-
+    const [emailSent, setEmailSent] = useState(false)
     const [loading, setLoading] = useState(true)
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [expiration, setExpiration] = useState(0)
-    const [list, setList] = useState([])
-
     const [errors, setErrors] = useState([])
     const [buttonDisabled, setButtonDisabled] = useState(false)
 
@@ -39,6 +37,7 @@ function AuthContextProvider(props) {
         setEmail('')
         setPassword('')
         setConfirm('')
+        setErrors('')
         setButtonDisabled(false)
     }
 
@@ -95,7 +94,7 @@ function AuthContextProvider(props) {
                 setUsername(result.username)
             } else if (result && result.success === false) {
                 resetForm()
-                setErrors(errors => [...errors, result.error])
+                setErrors(errors => [...errors, result.msg])
             }
         } catch (err) {
             resetForm()
@@ -132,7 +131,7 @@ function AuthContextProvider(props) {
                 doLogin()
             } else if (result && result.success === false) {
                 resetForm()
-                setErrors(errors => [...errors, result.error])
+                setErrors(errors => [...errors, result.msg])
             }
         } catch (err) {
             resetForm()
@@ -159,12 +158,11 @@ function AuthContextProvider(props) {
             let result = await res.data
 
             if (result && result.success) {
+                setEmailSent(true)
                 setExpiration(result.expiration)
-                setEmail(result.email)
-                
             } else if (result && result.success === false) {
                 resetForm()
-                setErrors(errors => [...errors, result.error])
+                setErrors(errors => [...errors, result.msg])
             }
         } catch (err) {
             resetForm()
@@ -197,7 +195,7 @@ function AuthContextProvider(props) {
             } else {
                 resetForm()
                 console.log(result.error)
-                setErrors(errors => [...errors, result.error])
+                setErrors(errors => [...errors, result.msg])
             }
         } catch (err) {
             console.log(err)
@@ -227,108 +225,6 @@ function AuthContextProvider(props) {
         }
     }
 
-    const getListItems = async () => {
-        try {
-            let res = await axios({
-                url: '/list',
-                method: 'get',
-                params: {
-                    username: username,
-                },
-            })
-
-            let result = await res.data
-
-            if (result && result.success) {
-                setList([...result.data])
-                setLoading(false)
-            } else {
-                setLoading(false)
-            }
-        } catch (err) {
-            setLoading(false)
-        }
-    }
-
-    const isItemInList = id => {
-        return list.some(item => item.listID === id)
-    }
-
-    const addToList = async listItem => {
-        let {
-            id,
-            name,
-            sourceUrl,
-            thumbnailUrl,
-            datePublished,
-            owningOrgId,
-        } = listItem
-
-        try {
-            let res = await axios({
-                url: '/list',
-                method: 'post',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                data: JSON.stringify({
-                    username,
-                    listID: id,
-                    name,
-                    sourceUrl,
-                    thumbnailUrl,
-                    datePublished,
-                    owningOrgId,
-                }),
-            })
-
-            let result = await res.data
-
-            if (result && result.success) {
-                if (isItemInList(id)) {
-                    setLoading(false)
-                    return
-                } else {
-                    setLoading(false)
-                    setList([...list, result])
-                }
-            } else {
-                setLoading(false)
-            }
-        } catch (err) {
-            setLoading(false)
-        }
-    }
-
-    const deleteListItem = async id => {
-        try {
-            let res = await axios({
-                url: '/list',
-                method: 'delete',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                params: {
-                    username,
-                    listID: id,
-                },
-            })
-
-            let result = await res.data
-
-            if (result && result.success) {
-                setLoading(false)
-                setList(list => list.filter(item => item.listID !== id))
-            } else {
-                setLoading(false)
-            }
-        } catch (err) {
-            setLoading(false)
-        }
-    }
-
     const authContextValue = {
         username,
         password,
@@ -342,18 +238,13 @@ function AuthContextProvider(props) {
         updatePassword,
         logout,
         loading,
-        getListItems,
-        list,
-        isItemInList,
-        addToList,
-        deleteListItem,
         errors,
-        setErrors,
         buttonDisabled,
         handleInputChange,
         resetForm,
         expiration,
-        resetSuccess
+        resetSuccess,
+        emailSent
     }
 
     return (

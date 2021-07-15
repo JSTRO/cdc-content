@@ -102,7 +102,7 @@ class Router {
 				})
 			}
 
-			db.query(
+			db.query( // Check if username already exists, if not, insert in db
 				'SELECT * FROM user WHERE username = ? LIMIT 1',
 				[username],
 				(err, data, fields) => {
@@ -114,10 +114,10 @@ class Router {
 						})
 						return
 					}
-					let pswrd = bcrypt.hashSync(password, 9)
+					let hashedPassword = bcrypt.hashSync(password, 9)
 					db.query(
 						'INSERT INTO user (username, email, password) VALUES (?, ?, ?)',
-						[username, email, pswrd],
+						[username, email, hashedPassword],
 						(err, data, fields) => {
 							if (err) {
 								res.json({
@@ -156,7 +156,7 @@ class Router {
 		})
 	}
 
-	isLoggedIn(app, db) {
+	isLoggedIn(app, db) { // returns true if user is logged in, false if not
 		app.post('/isLoggedIn', (req, res) => {
 			if (req.session.userID) {
 				db.query(
@@ -274,10 +274,10 @@ class Router {
 				})
 			}
 
-			let pswrd = bcrypt.hashSync(password, 9)
+			let hashedPassword = bcrypt.hashSync(password, 9)
 			let sql = `UPDATE user SET password = ? WHERE token = ? AND expiration > ? LIMIT 1`
 
-			db.query(sql, [pswrd, token, date], (err, data, fields) => {
+			db.query(sql, [hashedPassword, token, date], (err, data, fields) => {
 				if (data) {
 					let sql = `UPDATE user SET token = ?, expiration = ?, used = ? WHERE token = ? LIMIT 1`
 					db.query(sql, [undefined, undefined, 1, token], e => {

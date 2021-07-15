@@ -16,6 +16,7 @@ import DrawerRight from './components/DrawerRight'
 import Pagination from '@material-ui/lab/Pagination'
 import { AuthContext } from './context/authContext'
 import { APIContext } from './context/APIContext'
+import { ListContext } from './context/listContext'
 import './App.css'
 
 function App() {
@@ -30,12 +31,8 @@ function App() {
     setTagList,
   } = useContext(APIContext)
 
-  const {
-    checkIsLoggedIn,
-    isLoggedIn,
-    getListItems,
-    username,
-  } = useContext(AuthContext)
+  const { checkIsLoggedIn, isLoggedIn } = useContext(AuthContext)
+  const { listLoading } = useContext(ListContext)
 
   const handlePagination = (event, page) => {
     setCurrentPage(page)
@@ -44,11 +41,7 @@ function App() {
   useEffect(() => {
     checkIsLoggedIn()
   }, [])
-
-  useEffect(() => {
-    getListItems()
-  }, [username])
-
+  
   return (
     <div className="App">
       <Router>
@@ -71,6 +64,7 @@ function App() {
               showFirstButton
               showLastButton
             />
+            <Footer />
           </Route>
           {isLoggedIn ? (
             <Redirect to="/" />
@@ -83,8 +77,7 @@ function App() {
             </>
           )}
         </Switch>
-        {currentArticles.length > 0 && <Footer />}
-      </Router> 
+      </Router>
     </div>
   )
 }

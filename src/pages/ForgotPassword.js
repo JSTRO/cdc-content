@@ -2,35 +2,18 @@ import React, { useContext } from 'react'
 import { Grid, Typography, Paper } from '@material-ui/core'
 import Submit from '../components/Submit'
 import ContinueToBrowse from '../components/ContinueToBrowse'
+import PasswordSent from './PasswordSent'
 import AuthField from '../components/AuthField'
 import { AuthContext } from '../context/authContext'
 import '../App.css'
 
 function ForgotPassword() {
 	
-	const {email, resetPassword, expiration, errors, buttonDisabled} = useContext(AuthContext)
+	const {email, resetPassword, errors, buttonDisabled, emailSent} = useContext(AuthContext)
 
-	console.log(Date.now(), expiration)
-
-	if (expiration <= Date.now()) {
+	if (emailSent) {
 		return (
-			<>
-				<ContinueToBrowse />
-				<p className="password-sent">
-					An email has been sent with instructions for resetting your password. Please click the link in the email to proceed.
-				</p>
-			</>	
-		)
-	}
-
-	if (expiration > Date.now()) {
-		return (
-			<>
-				<ContinueToBrowse />
-				<p className="password-sent">
-					This link to reset your password has expired. Please return to the Reset Password page to proceed.
-				</p>
-			</>	
+			<PasswordSent />
 		)
 	}
 

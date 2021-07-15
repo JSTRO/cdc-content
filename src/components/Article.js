@@ -11,6 +11,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle'
 import Tag from './Tag'
 import DOMPurify from 'dompurify'
 import { AuthContext } from '../context/authContext'
+import { ListContext } from '../context/listContext'
 import formatDate from '../utils/formatDate.js'
 import articleStyles from '../styles/articleStyles'
 
@@ -26,7 +27,8 @@ function Article({ article, setTagList }) {
     sourceUrl
   } = article
   const sanitizedName = {__html: DOMPurify.sanitize(name)}
-  const {isLoggedIn, addToList, isItemInList} = useContext(AuthContext)
+  const {isLoggedIn} = useContext(AuthContext)
+  const {addToList, isItemInList} = useContext(ListContext)
   const chips = tags.slice(0, 5).map(tag => (
     <Tag key={tag.id} tag={tag} setTagList={setTagList} />
   ))

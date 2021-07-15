@@ -1,7 +1,5 @@
 import React, { useContext } from 'react'
-import { AuthContext } from '../context/authContext'
 import {
-  Avatar,
   Grid,
   Card,
   CardContent,
@@ -10,6 +8,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
+import { ListContext } from '../context/listContext'
 import DOMPurify from 'dompurify'
 import formatDate from '../utils/formatDate.js'
 import myListItemStyles from '../styles/myListItemStyles'
@@ -17,8 +16,8 @@ import '../App.css'
 
 function MyListItem({ item }) {
   const classes = myListItemStyles()
-  const { deleteListItem } = useContext(AuthContext)
-  const { name, thumbnailUrl, sourceUrl, owningOrgId, datePublished } = item
+  const { deleteListItem } = useContext(ListContext)
+  const { name, sourceUrl, owningOrgId, datePublished } = item
   const sanitizedName = { __html: DOMPurify.sanitize(name) }
 
   return (
@@ -26,9 +25,6 @@ function MyListItem({ item }) {
       <div className={classes.details}>
         <CardContent className={classes.cardContent}>
           <Grid container spacing={2}>
-            {/*<Grid item xs={2}>
-              <Avatar alt={thumbnailUrl} src={thumbnailUrl} variant="square" />
-            </Grid>*/}
             <Grid item xs={9}>
               <Typography variant="subtitle1" gutterBottom>
                 <Link

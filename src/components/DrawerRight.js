@@ -26,6 +26,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 import Search from './Search'
 import MyList from './MyList'
 import Submit from './Submit'
+import cdcLogo from '../imgs/cdcLogo.png'
 
 function DrawerRight({ search, setSearch }) {
   const classes = drawerStyles()
@@ -53,12 +54,10 @@ function DrawerRight({ search, setSearch }) {
       >
         <Toolbar className="toolbar">
           <Grid container>
-            <Grid item sm={3}>
-              <Typography variant="h6" noWrap className={classes.title}>
-                CDC Content
-              </Typography>
+            <Grid item sm={4}>
+              <img src={cdcLogo} className="logo"/>
             </Grid>
-            <Grid item sm={8}>
+            <Grid item sm={7}>
               <Search search={search} setSearch={setSearch} />
             </Grid>
             <Grid item sm={1}>

@@ -14,8 +14,6 @@ function RegisterPage() {
 		resetForm()
 	}, [])
 
-	console.log(errors)
-
 	return (
 		<>
 			<ContinueToBrowse />
