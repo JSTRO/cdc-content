@@ -11,10 +11,10 @@ app.use(express.json())
 
 // Database
 const db = mysql.createConnection({
-	host: 'localhost',
-	user: 'root',
-	password: 'a4UM7MWPDZzBt6tI',
-	database: 'cdc-content',
+	host: 'us-cdbr-east-04.cleardb.com',
+	user: 'b3a33aa31d1b74',
+	password: '51e0d99c',
+	database: 'heroku_2c8efedceb90e88',
 	debug: ['ComQueryPacket', 'RowDataPacket'],
 })
 
