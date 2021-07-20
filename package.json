@@ -30,7 +30,7 @@
     "react-use-auth": "^0.7.5"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "react-scripts start",
     "server": "node ./server/Main.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
