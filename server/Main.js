@@ -11,15 +11,6 @@ app.use(cors())
 app.use(express.static(path.join(__dirname, '../build')))
 app.use(express.json())
 
-// Database
-// const db_config = {
-// 	host: 'localhost',
-// 	user: 'root',
-// 	password: 'a4UM7MWPDZzBt6tI',
-// 	database: 'cdc-content',
-// 	debug: ['ComQueryPacket', 'RowDataPacket'],
-// }
-
 const db_config = {
 	host: 'us-cdbr-east-04.cleardb.com',
 	user: 'b3a33aa31d1b74',
@@ -29,16 +20,6 @@ const db_config = {
 }
 
 const db = mysql.createPool(db_config)
-
-// db.connect(err => {
-// 	if (err) {
-// 		console.log('DB error')
-// 		throw err
-// 		return false
-// 	}
-
-// 	console.log('Connected successfully.')
-// })
 
 const sessionStore = new MySQLStore(
 	{
