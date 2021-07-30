@@ -12,23 +12,33 @@ app.use(express.static(path.join(__dirname, '../build')))
 app.use(express.json())
 
 // Database
-const db = mysql.createConnection({
+// const db_config = {
+// 	host: 'localhost',
+// 	user: 'root',
+// 	password: 'a4UM7MWPDZzBt6tI',
+// 	database: 'cdc-content',
+// 	debug: ['ComQueryPacket', 'RowDataPacket'],
+// }
+
+const db_config = {
 	host: 'us-cdbr-east-04.cleardb.com',
 	user: 'b3a33aa31d1b74',
 	password: '51e0d99c',
 	database: 'heroku_2c8efedceb90e88',
 	debug: ['ComQueryPacket', 'RowDataPacket'],
-})
+}
 
-db.connect(err => {
-	if (err) {
-		console.log('DB error')
-		throw err
-		return false
-	}
+const db = mysql.createPool(db_config)
 
-	console.log('Connected successfully.')
-})
+// db.connect(err => {
+// 	if (err) {
+// 		console.log('DB error')
+// 		throw err
+// 		return false
+// 	}
+
+// 	console.log('Connected successfully.')
+// })
 
 const sessionStore = new MySQLStore(
 	{
@@ -55,7 +65,7 @@ app.use(
 new Router(app, db)
 
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../build/index.html'))
+  res.sendFile(path.resolve(__dirname, '../public/index.html'))
 })
 
 app.listen(process.env.PORT || 8080)

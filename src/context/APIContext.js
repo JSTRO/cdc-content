@@ -83,6 +83,7 @@ function APIContextProvider(props) {
         pageCount,
         tagList,
         setTagList,
+        resultsLoading
     }
 
     return (

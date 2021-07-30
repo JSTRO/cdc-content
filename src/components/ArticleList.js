@@ -1,7 +1,11 @@
 import React from 'react'
 import Article from './Article'
 
-function ArticleList({ setTagList, currentArticles }) {
+function ArticleList({ setTagList, currentArticles, resultsLoading }) { 
+	if (resultsLoading) {
+		return <p>Loading...</p>
+	}
+
 	return (
 		<div>
 			{currentArticles.map(article => (

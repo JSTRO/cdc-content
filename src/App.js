@@ -29,10 +29,10 @@ function App() {
     pageCount,
     tagList,
     setTagList,
+    resultsLoading
   } = useContext(APIContext)
 
   const { checkIsLoggedIn, isLoggedIn } = useContext(AuthContext)
-  const { listLoading } = useContext(ListContext)
 
   const handlePagination = (event, page) => {
     setCurrentPage(page)
@@ -54,6 +54,7 @@ function App() {
             <ArticleList
               setTagList={setTagList}
               currentArticles={currentArticles}
+              resultsLoading={resultsLoading}
             />
             <Pagination
               className="pagination"

@@ -6,13 +6,13 @@ const ListContext = React.createContext({})
 
 function ListContextProvider(props) {
 
-    const [listLoading, setListLoading] = useState(false)
+    const [listLoading, setListLoading] = useState(true)
     const [list, setList] = useState([])
     const {username} = useContext(AuthContext)
 
     const getListItems = async () => {
+        console.log(listLoading)
         try {
-            setListLoading(true)
             let res = await axios({
                 url: '/list',
                 method: 'get',
@@ -26,6 +26,7 @@ function ListContextProvider(props) {
             if (result && result.success) {
                 setList([...result.data])
                 setListLoading(false)
+                console.log(listLoading)
             } else {
                 setListLoading(false)
             }
