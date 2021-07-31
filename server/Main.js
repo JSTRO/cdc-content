@@ -13,13 +13,23 @@ app.use(express.json())
 
 const db_config = {
 	host: 'us-cdbr-east-04.cleardb.com',
-	user: 'b3a33aa31d1b74',
-	password: '51e0d99c',
-	database: 'heroku_2c8efedceb90e88',
+	user: 'b9bacd943d839f',
+	password: 'da263d82',
+	database: 'heroku_a5d580bb9b3fc50',
 	debug: ['ComQueryPacket', 'RowDataPacket'],
 }
 
 const db = mysql.createPool(db_config)
+
+// db.connect(err => {
+// 	if (err) {
+// 		console.log('DB error')
+// 		throw err
+// 		return false
+// 	}
+
+// 	console.log('Connected successfully.')
+// })
 
 const sessionStore = new MySQLStore(
 	{
